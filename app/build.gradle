@@ -1,0 +1,67 @@
+import com.vipulasri.jetinstagram.buildsrc.Libs
+
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+}
+
+android {
+  compileSdkVersion 30
+  buildToolsVersion "30.0.1"
+
+  defaultConfig {
+    applicationId "com.vipulasri.jetinstagram"
+    minSdkVersion 21
+    targetSdkVersion 30
+    versionCode 1
+    versionName "1.0"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
+
+  buildFeatures {
+    compose true
+    // Disable unused AGP features
+    buildConfig false
+    aidl false
+    renderScript false
+    resValues false
+    shaders false
+  }
+
+  composeOptions {
+    kotlinCompilerVersion Libs.Kotlin.version
+    kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+  }
+}
+
+dependencies {
+  implementation Libs.Kotlin.stdlib
+
+  implementation Libs.AndroidX.coreKtx
+  implementation Libs.AndroidX.appcompat
+
+  implementation Libs.AndroidX.Compose.runtime
+  implementation Libs.AndroidX.Compose.foundation
+  implementation Libs.AndroidX.Compose.layout
+  implementation Libs.AndroidX.Compose.ui
+  implementation Libs.AndroidX.Compose.material
+  implementation Libs.AndroidX.Compose.animation
+  implementation Libs.AndroidX.Compose.tooling
+}

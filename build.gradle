@@ -1,0 +1,23 @@
+import com.vipulasri.jetinstagram.buildsrc.Libs
+
+buildscript {
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath Libs.androidGradlePlugin
+    classpath Libs.Kotlin.gradlePlugin
+  }
+}
+
+allprojects {
+  repositories {
+    google()
+    jcenter()
+  }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
