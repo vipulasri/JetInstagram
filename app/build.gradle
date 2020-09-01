@@ -33,16 +33,11 @@ android {
 
   kotlinOptions {
     jvmTarget = '1.8'
+    useIR = true
   }
 
   buildFeatures {
     compose true
-    // Disable unused AGP features
-    buildConfig false
-    aidl false
-    renderScript false
-    resValues false
-    shaders false
   }
 
   composeOptions {
@@ -56,6 +51,7 @@ dependencies {
 
   implementation Libs.AndroidX.coreKtx
   implementation Libs.AndroidX.appcompat
+  implementation Libs.AndroidX.material
 
   implementation Libs.AndroidX.Compose.runtime
   implementation Libs.AndroidX.Compose.foundation
