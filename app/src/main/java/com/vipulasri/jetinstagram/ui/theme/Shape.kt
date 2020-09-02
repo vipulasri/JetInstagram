@@ -1,4 +1,4 @@
-package com.vipulasri.jetinstagram.ui
+package com.vipulasri.jetinstagram.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

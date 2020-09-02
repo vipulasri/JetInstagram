@@ -8,7 +8,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
-import com.vipulasri.jetinstagram.ui.JetInstagramTheme
+import com.vipulasri.jetinstagram.ui.home.HomeScreen
+import com.vipulasri.jetinstagram.ui.theme.JetInstagramTheme
 
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,22 +17,9 @@ class MainActivity : AppCompatActivity() {
     setContent {
       JetInstagramTheme {
         Surface(color = MaterialTheme.colors.background) {
-          Greeting("Android")
+          HomeScreen()
         }
       }
     }
-  }
-}
-
-@Composable
-fun Greeting(name: String) {
-  Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-  JetInstagramTheme {
-    Greeting("Android")
   }
 }
