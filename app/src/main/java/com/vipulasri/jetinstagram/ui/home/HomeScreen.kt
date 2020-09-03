@@ -1,13 +1,17 @@
 package com.vipulasri.jetinstagram.ui.home
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.ContentGravity
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -21,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun HomeScreen() {
@@ -39,11 +44,24 @@ fun HomeScreen() {
     Crossfade(currentSection) { section ->
       when (section) {
         HomeSection.Home -> Home()
-        HomeSection.Search -> Text(text = "Search")
-        HomeSection.Favorite -> Text(text = "Favorite")
-        HomeSection.Profile -> Text(text = "Profile")
+        HomeSection.Search -> Content(title = "Search")
+        HomeSection.Favorite -> Content(title = "Favorite")
+        HomeSection.Profile -> Content(title = "Profile")
       }
     }
+  }
+}
+
+@Composable
+private fun Content(title: String) {
+  Box(
+      modifier = Modifier.fillMaxSize(),
+      gravity = ContentGravity.Center
+  ) {
+    Text(
+        text = title,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.h5)
   }
 }
 
