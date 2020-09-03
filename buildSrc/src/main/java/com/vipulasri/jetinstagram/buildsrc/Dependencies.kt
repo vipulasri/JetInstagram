@@ -4,6 +4,11 @@ object Libs {
   const val androidGradlePlugin = "com.android.tools.build:gradle:4.2.0-alpha08"
   const val junit = "junit:junit:4.13"
 
+  object Accompanist {
+    private const val version = "0.2.0"
+    const val coil = "dev.chrisbanes.accompanist:accompanist-coil:$version"
+  }
+
   object Kotlin {
     private const val version = "1.4.0"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"

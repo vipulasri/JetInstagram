@@ -38,7 +38,7 @@ fun HomeScreen() {
     val modifier = Modifier.padding(innerPadding)
     Crossfade(currentSection) { section ->
       when (section) {
-        HomeSection.Home -> Text(text = "Home")
+        HomeSection.Home -> Home()
         HomeSection.Search -> Text(text = "Search")
         HomeSection.Favorite -> Text(text = "Favorite")
         HomeSection.Profile -> Text(text = "Profile")
