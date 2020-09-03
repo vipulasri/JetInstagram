@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
+import com.vipulasri.jetinstagram.model.populatePosts
 import com.vipulasri.jetinstagram.model.populateStories
 import com.vipulasri.jetinstagram.ui.home.HomeScreen
 import com.vipulasri.jetinstagram.ui.theme.JetInstagramTheme
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
 
     populateStories()
+    populatePosts()
 
     setContent {
       JetInstagramTheme {

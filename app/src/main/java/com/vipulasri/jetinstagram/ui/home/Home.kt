@@ -1,34 +1,32 @@
 package com.vipulasri.jetinstagram.ui.home
 
-import android.util.Log
-import androidx.annotation.Px
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Modifier.Companion
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset.Companion.Zero
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.HorizontalGradient
-import androidx.compose.ui.graphics.LinearGradient
-import androidx.compose.ui.graphics.RadialGradient
-import androidx.compose.ui.graphics.VerticalGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.IntSize.Companion.Zero
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.R.drawable
+import com.vipulasri.jetinstagram.model.Post
+import com.vipulasri.jetinstagram.model.posts
 import com.vipulasri.jetinstagram.model.stories
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
-import com.vipulasri.jetinstagram.ui.theme.grey100
 import com.vipulasri.jetinstagram.ui.theme.grey50
 import dev.chrisbanes.accompanist.coil.CoilImage
 
@@ -36,9 +34,10 @@ import dev.chrisbanes.accompanist.coil.CoilImage
 fun Home() {
   Scaffold(
       topBar = { Toolbar() }) {
-      Column {
-          StoriesSection()
-          Divider()
+      ScrollableColumn {
+        StoriesSection()
+        Divider()
+        PostList()
       }
   }
 }
@@ -123,5 +122,59 @@ private fun StoryImage(imageUrl: String) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize())
         }
+    }
+}
+
+@Composable
+private fun PostList() {
+  LazyColumnFor(
+      items = posts,
+      modifier = Modifier.fillMaxHeight()
+  ) { post ->
+      PostView(post)
+  }
+}
+
+@Composable
+private fun PostView(post: Post) {
+    Column {
+        PostHeader(post)
+        Box(
+            modifier = Modifier.fillMaxWidth().height(300.dp)
+                .background(color = Color.LightGray)
+        ) {
+            CoilImage(
+                data = post.image,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize())
+        }
+    }
+}
+
+@Composable
+private fun PostHeader(post: Post) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 12.dp),
+        verticalGravity = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            verticalGravity = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier.preferredSize(30.dp)
+                    .background(color = Color.LightGray, shape = CircleShape)
+                    .clip(CircleShape)
+            ) {
+                CoilImage(
+                    data = post.userImage,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize())
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Text(text = post.userName, style = MaterialTheme.typography.subtitle2)
+        }
+        Icon(Icons.Filled.MoreVert, tint = Color.Gray)
     }
 }

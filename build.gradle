@@ -4,6 +4,7 @@ buildscript {
   repositories {
     google()
     jcenter()
+    maven { url "https://jitpack.io" }
   }
   dependencies {
     classpath Libs.androidGradlePlugin
@@ -15,6 +16,7 @@ allprojects {
   repositories {
     google()
     jcenter()
+    maven { url "https://jitpack.io" }
   }
 }
 

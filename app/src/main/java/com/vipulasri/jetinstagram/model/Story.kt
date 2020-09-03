@@ -6,7 +6,7 @@ data class Story(
   val isSeen: Boolean = false
 )
 
-private val names = arrayOf(
+val names = arrayOf(
     "Your Story",
     "nianyc",
     "opioke",
