@@ -11,7 +11,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,24 +41,32 @@ fun Home() {
   }
 }
 
+val iconModifier = Modifier.width(20.dp).height(20.dp)
+
 @Composable
 private fun Toolbar() {
   TopAppBar(
-      modifier = Modifier.fillMaxWidth() + Modifier.wrapContentSize(Alignment.Center),
-      backgroundColor = MaterialTheme.colors.background
+      modifier = Modifier.fillMaxWidth(),
+      backgroundColor = MaterialTheme.colors.background,
   ) {
-    Image(
-        modifier = Modifier.padding(18.dp),
-        asset = imageResource(id = drawable.ic_camera))
-    Box(
-        modifier = Modifier.padding(10.dp),
-        gravity = ContentGravity.Center) {
-      Image(vectorResource(id = R.drawable.ic_instagram))
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalGravity = Alignment.CenterVertically
+    ) {
+      Image(
+          modifier = iconModifier,
+          asset = imageResource(id = drawable.ic_outlined_camera))
+      Box(
+          modifier = Modifier.padding(12.dp),
+          gravity = ContentGravity.Center) {
+        Image(vectorResource(id = R.drawable.ic_instagram))
+      }
+      Image(
+          modifier = iconModifier,
+          asset = imageResource(id = drawable.ic_dm)
+      )
     }
-    Image(
-        modifier = Modifier.padding(16.dp),
-        asset = imageResource(id = drawable.ic_instagram_dm)
-    )
   }
 }
 
@@ -138,16 +145,18 @@ private fun PostList() {
 @Composable
 private fun PostView(post: Post) {
     Column {
-        PostHeader(post)
-        Box(
-            modifier = Modifier.fillMaxWidth().height(300.dp)
-                .background(color = Color.LightGray)
-        ) {
-            CoilImage(
-                data = post.image,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize())
-        }
+      PostHeader(post)
+      Box(
+          modifier = Modifier.fillMaxWidth().height(300.dp)
+              .background(color = Color.LightGray)
+      ) {
+          CoilImage(
+              data = post.image,
+              contentScale = ContentScale.Crop,
+              modifier = Modifier.fillMaxSize())
+      }
+      PostFooter(post)
+      Divider()
     }
 }
 
@@ -175,6 +184,39 @@ private fun PostHeader(post: Post) {
             Spacer(modifier = Modifier.width(10.dp))
             Text(text = post.userName, style = MaterialTheme.typography.subtitle2)
         }
-        Icon(Icons.Filled.MoreVert, tint = Color.Gray)
+        Icon(Icons.Filled.MoreVert)
     }
+}
+
+@Composable
+private fun PostFooter(post: Post) {
+  Row(
+      modifier = Modifier.fillMaxWidth()
+          .padding(horizontal = 10.dp, vertical = 12.dp),
+      verticalGravity = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceBetween
+  ) {
+      Row(
+          verticalGravity = Alignment.CenterVertically
+      ) {
+
+        LikeButton(isLiked = post.isLiked)
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Icon(imageResource(id = drawable.ic_outlined_comment), modifier = iconModifier)
+        Spacer(modifier = Modifier.width(10.dp))
+
+        Icon(imageResource(id = drawable.ic_dm), modifier = iconModifier)
+
+      }
+      Icon(vectorResource(id = drawable.ic_outlined_bookmark), modifier = iconModifier)
+  }
+}
+
+@Composable
+private fun LikeButton(isLiked: Boolean) {
+  val likeIcon = if (isLiked) imageResource(id = drawable.ic_filled_favorite) else imageResource(id = drawable.ic_outlined_favorite)
+  val likeTint = if (isLiked) Color.Red else Color.Black
+
+  Icon(likeIcon, tint = likeTint, modifier = iconModifier)
 }
