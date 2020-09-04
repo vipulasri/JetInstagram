@@ -7,7 +7,7 @@ data class Story(
 )
 
 val names = arrayOf(
-    "Your Story",
+    "storee",
     "nianyc",
     "opioke",
     "ashoke",
@@ -25,6 +25,12 @@ val stories: List<Story>
 
 fun populateStories() {
   _stories.clear()
+  _stories.add(
+      Story(
+          image = currentUser.image,
+          name = currentUser.userName
+      )
+  )
   (0..9).forEach { index ->
     val story = Story(
         image = "https://randomuser.me/api/portraits/men/${index+1}.jpg",
