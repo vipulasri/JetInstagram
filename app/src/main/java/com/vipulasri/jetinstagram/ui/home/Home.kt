@@ -21,13 +21,11 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
-import com.vipulasri.jetinstagram.R.drawable
 import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.posts
 import com.vipulasri.jetinstagram.model.stories
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
 import com.vipulasri.jetinstagram.ui.components.icon
-import com.vipulasri.jetinstagram.ui.theme.grey50
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -46,34 +44,29 @@ fun Home() {
 private fun Toolbar() {
   TopAppBar(
       modifier = Modifier.fillMaxWidth(),
-      backgroundColor = MaterialTheme.colors.surface,
+      backgroundColor = MaterialTheme.colors.background
   ) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalGravity = Alignment.CenterVertically
     ) {
-      Image(
-          modifier = Modifier.icon(),
-          asset = imageResource(id = drawable.ic_outlined_camera))
+      Icon(imageResource(id = R.drawable.ic_outlined_camera),
+          modifier = Modifier.icon())
       Box(
           modifier = Modifier.padding(12.dp),
           gravity = ContentGravity.Center) {
-        Image(vectorResource(id = R.drawable.ic_instagram))
+        Icon(vectorResource(id = R.drawable.ic_instagram))
       }
-      Image(
-          modifier = Modifier.icon(),
-          asset = imageResource(id = drawable.ic_dm)
-      )
+      Icon(imageResource(id = R.drawable.ic_dm),
+          modifier = Modifier.icon())
     }
   }
 }
 
 @Composable
 private fun StoriesSection() {
-    Column(
-        modifier = Modifier.background(color = grey50)
-    ) {
+    Column {
         Row(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -202,20 +195,20 @@ private fun PostFooter(post: Post) {
         LikeButton(isLiked = post.isLiked)
         Spacer(modifier = Modifier.width(10.dp))
 
-        Icon(imageResource(id = drawable.ic_outlined_comment), modifier = Modifier.icon())
+        Icon(imageResource(id = R.drawable.ic_outlined_comment), modifier = Modifier.icon())
         Spacer(modifier = Modifier.width(10.dp))
 
-        Icon(imageResource(id = drawable.ic_dm), modifier = Modifier.icon())
+        Icon(imageResource(id = R.drawable.ic_dm), modifier = Modifier.icon())
 
       }
-      Icon(vectorResource(id = drawable.ic_outlined_bookmark), modifier = Modifier.icon())
+      Icon(vectorResource(id = R.drawable.ic_outlined_bookmark), modifier = Modifier.icon())
   }
 }
 
 @Composable
 private fun LikeButton(isLiked: Boolean) {
-  val likeIcon = if (isLiked) imageResource(id = drawable.ic_filled_favorite) else imageResource(id = drawable.ic_outlined_favorite)
-  val likeTint = if (isLiked) Color.Red else Color.Black
+  val likeIcon = if (isLiked) imageResource(id = R.drawable.ic_filled_favorite) else imageResource(id = R.drawable.ic_outlined_favorite)
+  val likeTint = if (isLiked) Color.Red else contentColor()
 
   Icon(likeIcon, tint = likeTint, modifier = Modifier.icon())
 }

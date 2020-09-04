@@ -7,6 +7,7 @@ import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.contentColor
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -76,7 +77,8 @@ private fun BottomBar(
 ) {
   BottomNavigation(
       modifier = Modifier.height(45.dp),
-      backgroundColor = MaterialTheme.colors.surface
+      backgroundColor = MaterialTheme.colors.background,
+      contentColor = contentColor()
   ) {
     items.forEach { section ->
 
