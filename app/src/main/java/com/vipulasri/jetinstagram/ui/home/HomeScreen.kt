@@ -53,6 +53,7 @@ fun HomeScreen() {
       when (section) {
         HomeSection.Home -> Home()
         HomeSection.Reels -> Content(title = "Reels")
+        HomeSection.Add -> Content(title = "Add Post options")
         HomeSection.Favorite -> Content(title = "Favorite")
         HomeSection.Profile -> Content(title = "Profile")
       }
@@ -108,6 +109,7 @@ private enum class HomeSection(
 ) {
   Home(R.drawable.ic_outlined_home, R.drawable.ic_filled_home),
   Reels(R.drawable.ic_outlined_reels, R.drawable.ic_filled_reels),
+  Add(R.drawable.ic_outlined_add, R.drawable.ic_outlined_add),
   Favorite(R.drawable.ic_outlined_favorite, R.drawable.ic_filled_favorite),
   Profile(R.drawable.ic_outlined_reels, R.drawable.ic_outlined_reels)
 }
