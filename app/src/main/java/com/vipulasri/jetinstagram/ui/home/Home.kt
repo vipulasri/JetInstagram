@@ -26,6 +26,7 @@ import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.posts
 import com.vipulasri.jetinstagram.model.stories
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
+import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.theme.grey50
 import dev.chrisbanes.accompanist.coil.CoilImage
 
@@ -41,13 +42,11 @@ fun Home() {
   }
 }
 
-val iconModifier = Modifier.width(20.dp).height(20.dp)
-
 @Composable
 private fun Toolbar() {
   TopAppBar(
       modifier = Modifier.fillMaxWidth(),
-      backgroundColor = MaterialTheme.colors.background,
+      backgroundColor = MaterialTheme.colors.surface,
   ) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
@@ -55,7 +54,7 @@ private fun Toolbar() {
         verticalGravity = Alignment.CenterVertically
     ) {
       Image(
-          modifier = iconModifier,
+          modifier = Modifier.icon(),
           asset = imageResource(id = drawable.ic_outlined_camera))
       Box(
           modifier = Modifier.padding(12.dp),
@@ -63,7 +62,7 @@ private fun Toolbar() {
         Image(vectorResource(id = R.drawable.ic_instagram))
       }
       Image(
-          modifier = iconModifier,
+          modifier = Modifier.icon(),
           asset = imageResource(id = drawable.ic_dm)
       )
     }
@@ -203,13 +202,13 @@ private fun PostFooter(post: Post) {
         LikeButton(isLiked = post.isLiked)
         Spacer(modifier = Modifier.width(10.dp))
 
-        Icon(imageResource(id = drawable.ic_outlined_comment), modifier = iconModifier)
+        Icon(imageResource(id = drawable.ic_outlined_comment), modifier = Modifier.icon())
         Spacer(modifier = Modifier.width(10.dp))
 
-        Icon(imageResource(id = drawable.ic_dm), modifier = iconModifier)
+        Icon(imageResource(id = drawable.ic_dm), modifier = Modifier.icon())
 
       }
-      Icon(vectorResource(id = drawable.ic_outlined_bookmark), modifier = iconModifier)
+      Icon(vectorResource(id = drawable.ic_outlined_bookmark), modifier = Modifier.icon())
   }
 }
 
@@ -218,5 +217,5 @@ private fun LikeButton(isLiked: Boolean) {
   val likeIcon = if (isLiked) imageResource(id = drawable.ic_filled_favorite) else imageResource(id = drawable.ic_outlined_favorite)
   val likeTint = if (isLiked) Color.Red else Color.Black
 
-  Icon(likeIcon, tint = likeTint, modifier = iconModifier)
+  Icon(likeIcon, tint = likeTint, modifier = Modifier.icon())
 }

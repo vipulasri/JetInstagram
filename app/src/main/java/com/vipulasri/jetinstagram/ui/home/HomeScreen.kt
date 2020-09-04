@@ -10,39 +10,23 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Modifier.Companion
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageAsset
-import androidx.compose.ui.graphics.imageFromResource
-import androidx.compose.ui.graphics.vector.VectorAsset
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.currentUser
-import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
+import com.vipulasri.jetinstagram.ui.components.icon
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -108,7 +92,7 @@ private fun BottomBar(
             } else {
               Icon(
                   imageResource(id = iconRes),
-                  modifier = Modifier.width(20.dp).height(20.dp)
+                  modifier = Modifier.icon()
               )
             }
 
@@ -140,7 +124,7 @@ private fun BottomBarProfile(isSelected: Boolean) {
       modifier = borderModifier
   ) {
     Box(
-        modifier = Modifier.preferredSize(20.dp)
+        modifier = Modifier.icon()
             .padding(padding)
             .background(color = Color.LightGray, shape = shape)
             .clip(shape)
