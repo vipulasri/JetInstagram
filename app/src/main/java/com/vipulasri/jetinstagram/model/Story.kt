@@ -28,7 +28,7 @@ fun populateStories() {
   _stories.add(
       Story(
           image = currentUser.image,
-          name = currentUser.userName
+          name = "Your Story"
       )
   )
   (0..9).forEach { index ->
