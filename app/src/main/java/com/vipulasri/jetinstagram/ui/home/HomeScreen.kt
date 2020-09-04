@@ -6,7 +6,9 @@ import androidx.compose.foundation.ContentGravity
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.MaterialTheme
@@ -24,8 +26,14 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.savedinstancestate.savedInstanceState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Modifier.Companion
+import androidx.compose.ui.graphics.ImageAsset
+import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.graphics.vector.VectorAsset
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.vipulasri.jetinstagram.R
 
 @Composable
 fun HomeScreen() {
@@ -44,7 +52,7 @@ fun HomeScreen() {
     Crossfade(currentSection) { section ->
       when (section) {
         HomeSection.Home -> Home()
-        HomeSection.Search -> Content(title = "Search")
+        HomeSection.Reels -> Content(title = "Reels")
         HomeSection.Favorite -> Content(title = "Favorite")
         HomeSection.Profile -> Content(title = "Profile")
       }
@@ -72,16 +80,20 @@ private fun BottomBar(
   onSectionSelected: (HomeSection) -> Unit,
 ) {
   BottomNavigation(
+      modifier = Modifier.height(45.dp),
       backgroundColor = MaterialTheme.colors.surface
   ) {
     items.forEach { section ->
 
       val selected = section == currentSection
 
-      val icon = if (selected) section.selectedIcon else section.icon
+      val iconRes = if (selected) section.selectedIcon else section.icon
 
       BottomNavigationItem(
-          icon = { Icon(icon) },
+          icon = { Icon(
+              imageResource(id = iconRes),
+              modifier = Modifier.width(20.dp).height(20.dp)
+          ) },
           selected = selected,
           onSelect = { onSectionSelected(section) },
           alwaysShowLabels = false
@@ -91,12 +103,12 @@ private fun BottomBar(
 }
 
 private enum class HomeSection(
-  val icon: VectorAsset,
-  val selectedIcon: VectorAsset
+  val icon: Int,
+  val selectedIcon: Int
 ) {
-  Home(Icons.Outlined.Home, Icons.Filled.Home),
-  Search(Icons.Outlined.Search, Icons.Filled.Search),
-  Favorite(Icons.Outlined.FavoriteBorder, Icons.Filled.Favorite),
-  Profile(Icons.Outlined.Person, Icons.Filled.Person)
+  Home(R.drawable.ic_outlined_home, R.drawable.ic_filled_home),
+  Reels(R.drawable.ic_outlined_reels, R.drawable.ic_filled_reels),
+  Favorite(R.drawable.ic_outlined_favorite, R.drawable.ic_filled_favorite),
+  Profile(R.drawable.ic_outlined_reels, R.drawable.ic_outlined_reels)
 }
 
