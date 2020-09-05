@@ -12,18 +12,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.EmphasisAmbient
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.material.Scaffold
@@ -31,6 +30,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,25 +41,38 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vipulasri.jetinstagram.R
+import com.vipulasri.jetinstagram.data.PostsRepository
 import com.vipulasri.jetinstagram.model.Post
-import com.vipulasri.jetinstagram.model.posts
-import com.vipulasri.jetinstagram.model.stories
 import com.vipulasri.jetinstagram.ui.components.defaultPadding
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
 import com.vipulasri.jetinstagram.ui.components.horizontalPadding
 import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.components.verticalPadding
 import dev.chrisbanes.accompanist.coil.CoilImage
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.getValue
+import com.vipulasri.jetinstagram.data.StoriesRepository
+import com.vipulasri.jetinstagram.model.Story
 
 @Composable
 fun Home() {
+
+  val coroutineScope = rememberCoroutineScope()
+
   Scaffold(
       topBar = { Toolbar() }) {
-      ScrollableColumn {
-        StoriesSection()
-        Divider()
-        PostList()
-      }
+    val posts by PostsRepository.observePosts()
+    val stories by StoriesRepository.observeStories()
+
+    ScrollableColumn {
+      StoriesSection(stories)
+      Divider()
+      PostList(posts, onLikeClick = { post ->
+        coroutineScope.launch {
+          PostsRepository.toggleLike(post.id)
+        }
+      })
+    }
   }
 }
 
@@ -94,7 +107,7 @@ private fun Toolbar() {
 }
 
 @Composable
-private fun StoriesSection() {
+private fun StoriesSection(stories: List<Story>) {
     Column {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -104,13 +117,13 @@ private fun StoriesSection() {
             Text(text = "Stories", style = MaterialTheme.typography.subtitle2)
             Text(text = "Watch All", style = MaterialTheme.typography.subtitle2)
         }
-        StoriesList()
+        StoriesList(stories)
         Spacer(modifier = Modifier.height(10.dp))
     }
 }
 
 @Composable
-private fun StoriesList() {
+private fun StoriesList(stories: List<Story>) {
     LazyRowFor(
         items = stories
     ) { story ->
@@ -156,17 +169,18 @@ private fun StoryImage(imageUrl: String) {
 }
 
 @Composable
-private fun PostList() {
-  LazyColumnFor(
-      items = posts,
-      modifier = Modifier.fillMaxHeight()
-  ) { post ->
-      PostView(post)
+private fun PostList(
+  posts: List<Post>,
+  onLikeClick: (Post) -> Unit) {
+  posts.forEach { post ->
+    PostView(post, onLikeClick)
   }
 }
 
 @Composable
-private fun PostView(post: Post) {
+private fun PostView(
+  post: Post,
+  onLikeClick: (Post) -> Unit) {
     Column {
       PostHeader(post)
       Box(
@@ -180,7 +194,7 @@ private fun PostView(post: Post) {
               modifier = Modifier.fillMaxSize()
           )
       }
-      PostFooter(post)
+      PostFooter(post, onLikeClick)
       Divider()
     }
 }
@@ -215,13 +229,17 @@ private fun PostHeader(post: Post) {
 }
 
 @Composable
-private fun PostFooter(post: Post) {
-  PostFooterIconSection(post)
+private fun PostFooter(
+  post: Post,
+  onLikeClick: (Post) -> Unit) {
+  PostFooterIconSection(post, onLikeClick)
   PostFooterTextSection(post)
 }
 
 @Composable
-private fun PostFooterIconSection(post: Post) {
+private fun PostFooterIconSection(
+  post: Post,
+  onLikeClick: (Post) -> Unit) {
   Row(
       modifier = Modifier.fillMaxWidth()
           .defaultPadding(),
@@ -232,7 +250,7 @@ private fun PostFooterIconSection(post: Post) {
           verticalGravity = Alignment.CenterVertically
       ) {
 
-        LikeButton(isLiked = post.isLiked)
+        LikeButton(post, onLikeClick)
         Spacer(modifier = Modifier.width(10.dp))
 
         Icon(imageResource(id = R.drawable.ic_outlined_comment), modifier = Modifier.icon())
@@ -276,13 +294,21 @@ private fun PostFooterTextSection(post: Post) {
 }
 
 @Composable
-private fun LikeButton(isLiked: Boolean) {
-  val likeIcon = if (isLiked) imageResource(id = R.drawable.ic_filled_favorite) else imageResource(
+private fun LikeButton(
+  post: Post,
+  onLikeClick: (Post) -> Unit) {
+  val likeIcon = if (post.isLiked) imageResource(id = R.drawable.ic_filled_favorite) else imageResource(
       id = R.drawable.ic_outlined_favorite
   )
-  val likeTint = if (isLiked) Color.Red else contentColor()
+  val likeTint = if (post.isLiked) Color.Red else contentColor()
 
-  Icon(likeIcon, tint = likeTint, modifier = Modifier.icon())
+  IconButton(
+      onClick = {
+        onLikeClick.invoke(post)
+      }
+  ) {
+    Icon(likeIcon, tint = likeTint, modifier = Modifier.icon())
+  }
 }
 
 private fun Long.getTimeElapsedText(): String {
