@@ -7,6 +7,7 @@ import androidx.compose.foundation.Icon
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.contentColor
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import com.vipulasri.jetinstagram.data.StoriesRepository
 import com.vipulasri.jetinstagram.model.Story
+import com.vipulasri.jetinstagram.ui.components.PostIconButton
 
 @Composable
 fun Home() {
@@ -108,70 +110,71 @@ private fun Toolbar() {
 
 @Composable
 private fun StoriesSection(stories: List<Story>) {
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Stories", style = MaterialTheme.typography.subtitle2)
-            Text(text = "Watch All", style = MaterialTheme.typography.subtitle2)
-        }
-        StoriesList(stories)
-        Spacer(modifier = Modifier.height(10.dp))
+  Column {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+            .padding(10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+      Text(text = "Stories", style = MaterialTheme.typography.subtitle2)
+      Text(text = "Watch All", style = MaterialTheme.typography.subtitle2)
     }
+    StoriesList(stories)
+    Spacer(modifier = Modifier.height(10.dp))
+  }
 }
 
 @Composable
 private fun StoriesList(stories: List<Story>) {
-    LazyRowFor(
-        items = stories
-    ) { story ->
-        Column(
-            horizontalGravity = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
-        ) {
-            StoryImage(imageUrl = story.image)
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(story.name, style = MaterialTheme.typography.caption)
-        }
+  LazyRowFor(
+      items = stories
+  ) { story ->
+    Column(
+        horizontalGravity = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
+    ) {
+      StoryImage(imageUrl = story.image)
+      Spacer(modifier = Modifier.height(5.dp))
+      Text(story.name, style = MaterialTheme.typography.caption)
     }
+  }
 }
 
 @Composable
 private fun StoryImage(imageUrl: String) {
-    val shape = CircleShape
+  val shape = CircleShape
+  Box(
+      modifier = Modifier
+          .diagonalGradientBorder(
+              colors = listOf(
+                  Color(0xFFd6249f),
+                  Color(0xFFfd5949),
+                  Color(0xFFfdf497),
+              ),
+              shape = shape,
+              isFromRight = true
+          )
+  ) {
     Box(
-        modifier = Modifier
-            .diagonalGradientBorder(
-                colors = listOf(
-                    Color(0xFFd6249f),
-                    Color(0xFFfd5949),
-                    Color(0xFFfdf497),
-                ),
-                shape = shape,
-                isFromRight = true
-            )
+        modifier = Modifier.preferredSize(60.dp)
+            .padding(3.dp)
+            .background(color = Color.LightGray, shape = shape)
+            .clip(shape)
     ) {
-        Box(
-            modifier = Modifier.preferredSize(60.dp)
-                .padding(3.dp)
-                .background(color = Color.LightGray, shape = shape)
-                .clip(shape)
-        ) {
-            CoilImage(
-                data = imageUrl,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
+      CoilImage(
+          data = imageUrl,
+          contentScale = ContentScale.Crop,
+          modifier = Modifier.fillMaxSize()
+      )
     }
+  }
 }
 
 @Composable
 private fun PostList(
   posts: List<Post>,
-  onLikeClick: (Post) -> Unit) {
+  onLikeClick: (Post) -> Unit
+) {
   posts.forEach { post ->
     PostView(post, onLikeClick)
   }
@@ -180,58 +183,60 @@ private fun PostList(
 @Composable
 private fun PostView(
   post: Post,
-  onLikeClick: (Post) -> Unit) {
-    Column {
-      PostHeader(post)
-      Box(
-          modifier = Modifier.fillMaxWidth()
-              .height(300.dp)
-              .background(color = Color.LightGray)
-      ) {
-          CoilImage(
-              data = post.image,
-              contentScale = ContentScale.Crop,
-              modifier = Modifier.fillMaxSize()
-          )
-      }
-      PostFooter(post, onLikeClick)
-      Divider()
+  onLikeClick: (Post) -> Unit
+) {
+  Column {
+    PostHeader(post)
+    Box(
+        modifier = Modifier.fillMaxWidth()
+            .height(300.dp)
+            .background(color = Color.LightGray)
+    ) {
+      CoilImage(
+          data = post.image,
+          contentScale = ContentScale.Crop,
+          modifier = Modifier.fillMaxSize()
+      )
     }
+    PostFooter(post, onLikeClick)
+    Divider()
+  }
 }
 
 @Composable
 private fun PostHeader(post: Post) {
+  Row(
+      modifier = Modifier.fillMaxWidth()
+          .defaultPadding(),
+      verticalGravity = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.SpaceBetween
+  ) {
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .defaultPadding(),
-        verticalGravity = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        verticalGravity = Alignment.CenterVertically
     ) {
-        Row(
-            verticalGravity = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier.preferredSize(30.dp)
-                    .background(color = Color.LightGray, shape = CircleShape)
-                    .clip(CircleShape)
-            ) {
-                CoilImage(
-                    data = post.userImage,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(text = post.userName, style = MaterialTheme.typography.subtitle2)
-        }
-        Icon(Icons.Filled.MoreVert)
+      Box(
+          modifier = Modifier.preferredSize(30.dp)
+              .background(color = Color.LightGray, shape = CircleShape)
+              .clip(CircleShape)
+      ) {
+        CoilImage(
+            data = post.userImage,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+      }
+      Spacer(modifier = Modifier.width(10.dp))
+      Text(text = post.userName, style = MaterialTheme.typography.subtitle2)
     }
+    Icon(Icons.Filled.MoreVert)
+  }
 }
 
 @Composable
 private fun PostFooter(
   post: Post,
-  onLikeClick: (Post) -> Unit) {
+  onLikeClick: (Post) -> Unit
+) {
   PostFooterIconSection(post, onLikeClick)
   PostFooterTextSection(post)
 }
@@ -239,27 +244,31 @@ private fun PostFooter(
 @Composable
 private fun PostFooterIconSection(
   post: Post,
-  onLikeClick: (Post) -> Unit) {
+  onLikeClick: (Post) -> Unit
+) {
+
   Row(
-      modifier = Modifier.fillMaxWidth()
-          .defaultPadding(),
+      modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
       verticalGravity = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.SpaceBetween
   ) {
-      Row(
-          verticalGravity = Alignment.CenterVertically
-      ) {
+    Row(
+        verticalGravity = Alignment.CenterVertically
+    ) {
+      LikeButton(post, onLikeClick)
 
-        LikeButton(post, onLikeClick)
-        Spacer(modifier = Modifier.width(10.dp))
-
-        Icon(imageResource(id = R.drawable.ic_outlined_comment), modifier = Modifier.icon())
-        Spacer(modifier = Modifier.width(10.dp))
-
-        Icon(imageResource(id = R.drawable.ic_dm), modifier = Modifier.icon())
-
+      PostIconButton {
+        Icon(imageResource(id = R.drawable.ic_outlined_comment))
       }
-      Icon(vectorResource(id = R.drawable.ic_outlined_bookmark), modifier = Modifier.icon())
+
+      PostIconButton {
+        Icon(imageResource(id = R.drawable.ic_dm))
+      }
+    }
+
+    PostIconButton {
+      Icon(vectorResource(id = R.drawable.ic_outlined_bookmark))
+    }
   }
 }
 
@@ -296,18 +305,16 @@ private fun PostFooterTextSection(post: Post) {
 @Composable
 private fun LikeButton(
   post: Post,
-  onLikeClick: (Post) -> Unit) {
-  val likeIcon = if (post.isLiked) imageResource(id = R.drawable.ic_filled_favorite) else imageResource(
-      id = R.drawable.ic_outlined_favorite
-  )
+  onLikeClick: (Post) -> Unit
+) {
+  val likeIcon =
+    if (post.isLiked) imageResource(id = R.drawable.ic_filled_favorite) else imageResource(
+        id = R.drawable.ic_outlined_favorite
+    )
   val likeTint = if (post.isLiked) Color.Red else contentColor()
 
-  IconButton(
-      onClick = {
-        onLikeClick.invoke(post)
-      }
-  ) {
-    Icon(likeIcon, tint = likeTint, modifier = Modifier.icon())
+  PostIconButton(onClick = { onLikeClick.invoke(post) }) {
+    Icon(likeIcon, tint = likeTint)
   }
 }
 
@@ -316,5 +323,7 @@ private fun Long.getTimeElapsedText(): String {
   val time = this
 
   return DateUtils.getRelativeTimeSpanString(
-      time, now, 0L, DateUtils.FORMAT_ABBREV_TIME).toString()
+      time, now, 0L, DateUtils.FORMAT_ABBREV_TIME
+  )
+      .toString()
 }

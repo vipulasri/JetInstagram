@@ -40,15 +40,25 @@ object PostsRepository {
   fun observePosts(): MutableState<List<Post>> = posts
 
   suspend fun toggleLike(postId: Int) {
+    updateLike(postId, true)
+  }
+
+  suspend fun performLike(postId: Int) {
+    updateLike(postId, false)
+  }
+
+  private suspend fun updateLike(postId: Int, isToggle: Boolean) {
     withContext(Dispatchers.IO) {
       val _posts = posts.value.toMutableList()
       for((index, value) in _posts.withIndex()) {
         if (value.id == postId) {
-          _posts[index] = value.copy(isLiked = true)
+
+          val isLiked = if (isToggle) !value.isLiked else true
+
+          _posts[index] = value.copy(isLiked = isLiked)
           break
         }
       }
-
       posts.value = _posts
     }
   }
