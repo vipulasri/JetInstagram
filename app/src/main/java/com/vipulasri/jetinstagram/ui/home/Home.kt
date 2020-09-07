@@ -54,6 +54,7 @@ import androidx.compose.runtime.getValue
 import com.vipulasri.jetinstagram.data.StoriesRepository
 import com.vipulasri.jetinstagram.model.Story
 import com.vipulasri.jetinstagram.ui.components.PostIconButton
+import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 
 @Composable
 fun Home() {
@@ -80,6 +81,7 @@ fun Home() {
           }
         }
       )
+      Spacer(modifier = Modifier.height(bottomBarHeight))
     }
   }
 }
