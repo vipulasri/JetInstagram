@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.LazyRowFor
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.EmphasisAmbient
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.material.Scaffold
@@ -69,11 +68,18 @@ fun Home() {
     ScrollableColumn {
       StoriesSection(stories)
       Divider()
-      PostList(posts, onLikeClick = { post ->
-        coroutineScope.launch {
-          PostsRepository.toggleLike(post.id)
+      PostList(posts,
+        onDoubleClick = { post ->
+          coroutineScope.launch {
+            PostsRepository.performLike(post.id)
+          }
+        },
+        onLikeToggle = { post ->
+          coroutineScope.launch {
+            PostsRepository.toggleLike(post.id)
+          }
         }
-      })
+      )
     }
   }
 }
@@ -173,23 +179,30 @@ private fun StoryImage(imageUrl: String) {
 @Composable
 private fun PostList(
   posts: List<Post>,
-  onLikeClick: (Post) -> Unit
+  onDoubleClick: (Post) -> Unit,
+  onLikeToggle: (Post) -> Unit
 ) {
   posts.forEach { post ->
-    PostView(post, onLikeClick)
+    PostView(post, onDoubleClick, onLikeToggle)
   }
 }
 
 @Composable
 private fun PostView(
   post: Post,
-  onLikeClick: (Post) -> Unit
+  onDoubleClick: (Post) -> Unit,
+  onLikeToggle: (Post) -> Unit
 ) {
   Column {
     PostHeader(post)
     Box(
         modifier = Modifier.fillMaxWidth()
             .height(300.dp)
+            .clickable(
+                onClick = { },
+                onDoubleClick = { onDoubleClick.invoke(post) },
+                indication = null
+            )
             .background(color = Color.LightGray)
     ) {
       CoilImage(
@@ -198,7 +211,7 @@ private fun PostView(
           modifier = Modifier.fillMaxSize()
       )
     }
-    PostFooter(post, onLikeClick)
+    PostFooter(post, onLikeToggle)
     Divider()
   }
 }
@@ -235,16 +248,16 @@ private fun PostHeader(post: Post) {
 @Composable
 private fun PostFooter(
   post: Post,
-  onLikeClick: (Post) -> Unit
+  onLikeToggle: (Post) -> Unit
 ) {
-  PostFooterIconSection(post, onLikeClick)
+  PostFooterIconSection(post, onLikeToggle)
   PostFooterTextSection(post)
 }
 
 @Composable
 private fun PostFooterIconSection(
   post: Post,
-  onLikeClick: (Post) -> Unit
+  onLikeToggle: (Post) -> Unit
 ) {
 
   Row(
@@ -255,7 +268,7 @@ private fun PostFooterIconSection(
     Row(
         verticalGravity = Alignment.CenterVertically
     ) {
-      LikeButton(post, onLikeClick)
+      LikeButton(post, onLikeToggle)
 
       PostIconButton {
         Icon(imageResource(id = R.drawable.ic_outlined_comment))
