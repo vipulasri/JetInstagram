@@ -55,7 +55,13 @@ object PostsRepository {
 
           val isLiked = if (isToggle) !value.isLiked else true
 
-          _posts[index] = value.copy(isLiked = isLiked)
+          // check if isLiked is same as previous state
+          if (isLiked != value.isLiked) {
+            val likesCount = if (isLiked) value.likesCount.plus(1) else value.likesCount.minus(1)
+
+            _posts[index] = value.copy(isLiked = isLiked, likesCount = likesCount)
+          }
+
           break
         }
       }

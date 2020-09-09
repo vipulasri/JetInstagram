@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.currentUser
+import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.icon
 import dev.chrisbanes.accompanist.coil.CoilImage
 
@@ -76,7 +77,7 @@ private fun BottomBar(
   onSectionSelected: (HomeSection) -> Unit,
 ) {
   BottomNavigation(
-      modifier = Modifier.height(45.dp),
+      modifier = Modifier.height(bottomBarHeight),
       backgroundColor = MaterialTheme.colors.background,
       contentColor = contentColor()
   ) {
