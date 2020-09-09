@@ -8,7 +8,6 @@ import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.contentColor
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +29,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +42,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.data.PostsRepository
+import com.vipulasri.jetinstagram.data.StoriesRepository
 import com.vipulasri.jetinstagram.model.Post
+import com.vipulasri.jetinstagram.model.Story
+import com.vipulasri.jetinstagram.ui.components.AnimLikeButton
+import com.vipulasri.jetinstagram.ui.components.PostIconButton
 import com.vipulasri.jetinstagram.ui.components.defaultPadding
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
 import com.vipulasri.jetinstagram.ui.components.horizontalPadding
@@ -50,10 +54,6 @@ import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.components.verticalPadding
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.getValue
-import com.vipulasri.jetinstagram.data.StoriesRepository
-import com.vipulasri.jetinstagram.model.Story
-import com.vipulasri.jetinstagram.ui.components.PostIconButton
 import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 
 @Composable
@@ -270,7 +270,7 @@ private fun PostFooterIconSection(
     Row(
         verticalGravity = Alignment.CenterVertically
     ) {
-      LikeButton(post, onLikeToggle)
+      AnimLikeButton(post, onLikeToggle)
 
       PostIconButton {
         Icon(imageResource(id = R.drawable.ic_outlined_comment))
@@ -314,22 +314,6 @@ private fun PostFooterTextSection(post: Post) {
           style = MaterialTheme.typography.caption.copy(fontSize = 10.sp)
       )
     }
-  }
-}
-
-@Composable
-private fun LikeButton(
-  post: Post,
-  onLikeClick: (Post) -> Unit
-) {
-  val likeIcon =
-    if (post.isLiked) imageResource(id = R.drawable.ic_filled_favorite) else imageResource(
-        id = R.drawable.ic_outlined_favorite
-    )
-  val likeTint = if (post.isLiked) Color.Red else contentColor()
-
-  PostIconButton(onClick = { onLikeClick.invoke(post) }) {
-    Icon(likeIcon, tint = likeTint)
   }
 }
 
