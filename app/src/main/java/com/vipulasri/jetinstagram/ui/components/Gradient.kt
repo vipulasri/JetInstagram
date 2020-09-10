@@ -25,37 +25,37 @@ import androidx.compose.ui.unit.dp
 fun Modifier.horizontalGradientBackground(
     colors: List<Color>
 ) = gradientBackground(colors) { gradientColors, size ->
-    HorizontalGradient(
-        colors = gradientColors,
-        startX = 0f,
-        endX = size.width
-    )
+  HorizontalGradient(
+      colors = gradientColors,
+      startX = 0f,
+      endX = size.width
+  )
 }
 
 fun Modifier.diagonalGradientTint(
     colors: List<Color>,
     blendMode: BlendMode
 ) = gradientTint(colors, blendMode) { gradientColors, size ->
-    LinearGradient(
-        colors = gradientColors,
-        startX = 0f,
-        startY = 0f,
-        endX = size.width,
-        endY = size.height
-    )
+  LinearGradient(
+      colors = gradientColors,
+      startX = 0f,
+      startY = 0f,
+      endX = size.width,
+      endY = size.height
+  )
 }
 
 fun Modifier.gradientBackground(
     colors: List<Color>,
     brushProvider: (List<Color>, Size) -> LinearGradient
 ): Modifier = composed {
-    var size by remember { mutableStateOf(Size.Zero) }
-    val gradient = remember(colors, size) { brushProvider(colors, size) }
-    drawWithContent {
-        size = this.size
-        drawRect(brush = gradient)
-        drawContent()
-    }
+  var size by remember { mutableStateOf(Size.Zero) }
+  val gradient = remember(colors, size) { brushProvider(colors, size) }
+  drawWithContent {
+    size = this.size
+    drawRect(brush = gradient)
+    drawContent()
+  }
 }
 
 fun Modifier.gradientTint(
@@ -63,16 +63,16 @@ fun Modifier.gradientTint(
     blendMode: BlendMode,
     brushProvider: (List<Color>, Size) -> LinearGradient
 ) = composed {
-    var size by remember { mutableStateOf(Size.Zero) }
-    val gradient = remember(colors, size) { brushProvider(colors, size) }
-    drawWithContent {
-        drawContent()
-        size = this.size
-        drawRect(
-            brush = gradient,
-            blendMode = blendMode
-        )
-    }
+  var size by remember { mutableStateOf(Size.Zero) }
+  val gradient = remember(colors, size) { brushProvider(colors, size) }
+  drawWithContent {
+    drawContent()
+    size = this.size
+    drawRect(
+        brush = gradient,
+        blendMode = blendMode
+    )
+  }
 }
 
 fun Modifier.offsetGradientBackground(
@@ -99,25 +99,25 @@ fun Modifier.diagonalGradientBorder(
     shape = shape
 ) { gradientColors, size ->
 
-    var startX = 0f
-    var starty = 0f
-    var endX = size.width.toFloat()
-    var endY = size.height.toFloat()
+  var startX = 0f
+  var starty = 0f
+  var endX = size.width.toFloat()
+  var endY = size.height.toFloat()
 
-    if (isFromRight) {
-        startX = size.width.toFloat()
-        starty = 0f
-        endX = 0f
-        endY = size.height.toFloat()
-    }
+  if (isFromRight) {
+    startX = size.width.toFloat()
+    starty = 0f
+    endX = 0f
+    endY = size.height.toFloat()
+  }
 
-    LinearGradient(
-        colors = gradientColors,
-        startX = startX,
-        startY = starty,
-        endX = endX,
-        endY = endY
-    )
+  LinearGradient(
+      colors = gradientColors,
+      startX = startX,
+      startY = starty,
+      endX = endX,
+      endY = endY
+  )
 }
 
 fun Modifier.fadeInDiagonalGradientBorder(
@@ -126,14 +126,14 @@ fun Modifier.fadeInDiagonalGradientBorder(
     borderSize: Dp = 2.dp,
     shape: Shape
 ) = composed {
-    val animatedColors = List(colors.size) { i ->
-        animate(if (showBorder) colors[i] else colors[i].copy(alpha = 0f))
-    }
-    diagonalGradientBorder(
-        colors = animatedColors,
-        borderSize = borderSize,
-        shape = shape
-    )
+  val animatedColors = List(colors.size) { i ->
+    animate(if (showBorder) colors[i] else colors[i].copy(alpha = 0f))
+  }
+  diagonalGradientBorder(
+      colors = animatedColors,
+      borderSize = borderSize,
+      shape = shape
+  )
 }
 
 fun Modifier.gradientBorder(
@@ -142,12 +142,12 @@ fun Modifier.gradientBorder(
     shape: Shape,
     brushProvider: (List<Color>, IntSize) -> LinearGradient
 ) = composed {
-    var size by remember { mutableStateOf(IntSize.Zero) }
-    val gradient = remember(colors, size) { brushProvider(colors, size) }
-    val sizeProvider = onPositioned { size = it.size }
-    sizeProvider then border(
-        width = borderSize,
-        brush = gradient,
-        shape = shape
-    )
+  var size by remember { mutableStateOf(IntSize.Zero) }
+  val gradient = remember(colors, size) { brushProvider(colors, size) }
+  val sizeProvider = onPositioned { size = it.size }
+  sizeProvider then border(
+      width = borderSize,
+      brush = gradient,
+      shape = shape
+  )
 }

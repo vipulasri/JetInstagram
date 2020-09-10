@@ -24,7 +24,7 @@ object StoriesRepository {
 
     (0..9).forEach { index ->
       val story = Story(
-          image = "https://randomuser.me/api/portraits/men/${index+1}.jpg",
+          image = "https://randomuser.me/api/portraits/men/${index + 1}.jpg",
           name = names[index]
       )
       _stories.add(story)

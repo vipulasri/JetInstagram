@@ -66,7 +66,8 @@ private fun Content(title: String) {
     Text(
         text = title,
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.h5)
+        style = MaterialTheme.typography.h5
+    )
   }
 }
 
@@ -135,7 +136,8 @@ private fun BottomBarProfile(isSelected: Boolean) {
       CoilImage(
           data = currentUser.image,
           contentScale = ContentScale.Crop,
-          modifier = Modifier.fillMaxSize())
+          modifier = Modifier.fillMaxSize()
+      )
     }
   }
 

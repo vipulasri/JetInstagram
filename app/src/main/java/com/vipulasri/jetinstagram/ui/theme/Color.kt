@@ -1,7 +1,5 @@
 package com.vipulasri.jetinstagram.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val purple200 = Color(0xFFBB86FC)

@@ -47,6 +47,7 @@ import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.Story
 import com.vipulasri.jetinstagram.ui.components.AnimLikeButton
 import com.vipulasri.jetinstagram.ui.components.PostIconButton
+import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.defaultPadding
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
 import com.vipulasri.jetinstagram.ui.components.horizontalPadding
@@ -54,7 +55,6 @@ import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.components.verticalPadding
 import dev.chrisbanes.accompanist.coil.CoilImage
 import kotlinx.coroutines.launch
-import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 
 @Composable
 fun Home() {
@@ -70,16 +70,16 @@ fun Home() {
       StoriesSection(stories)
       Divider()
       PostList(posts,
-        onDoubleClick = { post ->
-          coroutineScope.launch {
-            PostsRepository.performLike(post.id)
+          onDoubleClick = { post ->
+            coroutineScope.launch {
+              PostsRepository.performLike(post.id)
+            }
+          },
+          onLikeToggle = { post ->
+            coroutineScope.launch {
+              PostsRepository.toggleLike(post.id)
+            }
           }
-        },
-        onLikeToggle = { post ->
-          coroutineScope.launch {
-            PostsRepository.toggleLike(post.id)
-          }
-        }
       )
       Spacer(modifier = Modifier.height(bottomBarHeight))
     }
@@ -263,7 +263,8 @@ private fun PostFooterIconSection(
 ) {
 
   Row(
-      modifier = Modifier.fillMaxWidth().padding(horizontal = 5.dp),
+      modifier = Modifier.fillMaxWidth()
+          .padding(horizontal = 5.dp),
       verticalGravity = Alignment.CenterVertically,
       horizontalArrangement = Arrangement.SpaceBetween
   ) {

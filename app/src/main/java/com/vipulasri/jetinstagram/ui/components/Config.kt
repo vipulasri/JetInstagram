@@ -11,5 +11,7 @@ val bottomBarHeight = 50.dp
 
 fun Modifier.icon() = this.preferredSize(24.dp)
 
-fun Modifier.defaultPadding() = this.padding(horizontal = horizontalPadding,
-    vertical = verticalPadding)
+fun Modifier.defaultPadding() = this.padding(
+    horizontal = horizontalPadding,
+    vertical = verticalPadding
+)

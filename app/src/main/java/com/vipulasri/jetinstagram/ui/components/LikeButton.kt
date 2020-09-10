@@ -27,7 +27,9 @@ import com.vipulasri.jetinstagram.R.drawable
 import com.vipulasri.jetinstagram.model.Post
 
 private enum class AnimationState {
-  START, MID, END
+  START,
+  MID,
+  END
 }
 
 //dp animation
@@ -40,8 +42,9 @@ private val dpAnimDefinition = transitionDefinition<Int> {
     dpPropKey using repeatable(
         iterations = 1,
         animation = tween(
-        durationMillis = 50,
-        easing = FastOutLinearInEasing)
+            durationMillis = 50,
+            easing = FastOutLinearInEasing
+        )
     )
   }
 }
