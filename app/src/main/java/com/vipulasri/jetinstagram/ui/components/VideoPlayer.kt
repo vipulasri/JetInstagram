@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.onDispose
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.viewinterop.AndroidView
@@ -47,4 +48,9 @@ fun VideoPlayer(uri: Uri) {
       layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
     }
   })
+
+  onDispose(callback = {
+    exoPlayer.stop()
+  })
+
 }
