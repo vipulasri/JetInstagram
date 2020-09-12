@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.Post
+import com.vipulasri.jetinstagram.model.User
 import com.vipulasri.jetinstagram.model.names
 
 internal enum class AnimationState {
@@ -136,8 +137,11 @@ private fun LikeButtonPreview() {
       post = Post(
           id = 1,
           image = "https://source.unsplash.com/random/400x300",
-          userName = names.first(),
-          userImage = "https://randomuser.me/api/portraits/men/1.jpg",
+          user = User(
+              name = names.first(),
+              username = names.first(),
+              image = "https://randomuser.me/api/portraits/men/1.jpg"
+          ),
           likesCount = 100,
           commentsCount = 20,
           timeStamp = System.currentTimeMillis() - (60000)

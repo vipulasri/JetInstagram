@@ -18,7 +18,7 @@ object ReelsRepository {
           video = videos[index],
           user = User(
               name = names[index],
-              userName = names[index],
+              username = names[index],
               image = "https://randomuser.me/api/portraits/men/${index + 1}.jpg"
           ),
           likesCount = index + 100,

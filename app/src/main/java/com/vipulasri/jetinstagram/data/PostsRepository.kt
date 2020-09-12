@@ -3,6 +3,7 @@ package com.vipulasri.jetinstagram.data
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.vipulasri.jetinstagram.model.Post
+import com.vipulasri.jetinstagram.model.User
 import com.vipulasri.jetinstagram.model.names
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,8 +20,11 @@ object PostsRepository {
       val post = Post(
           id = index + 1,
           image = "https://source.unsplash.com/random/400x300?$index",
-          userName = names[index],
-          userImage = "https://randomuser.me/api/portraits/men/${index + 1}.jpg",
+          user = User(
+              name = names[index],
+              username = names[index],
+              image = "https://randomuser.me/api/portraits/men/${index + 1}.jpg"
+          ),
           likesCount = index + 100,
           commentsCount = index + 20,
           timeStamp = System.currentTimeMillis() - (index * 60000)

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumnFor
@@ -109,7 +108,7 @@ private fun ReelFooter(
       )
       Spacer(modifier = Modifier.width(horizontalPadding))
       Text(
-          text = reel.user.userName,
+          text = reel.user.username,
           color = Color.White,
           style = MaterialTheme.typography.subtitle2
       )

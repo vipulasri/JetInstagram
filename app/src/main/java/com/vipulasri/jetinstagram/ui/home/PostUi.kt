@@ -103,13 +103,13 @@ private fun PostHeader(post: Post) {
               .clip(CircleShape)
       ) {
         CoilImage(
-            data = post.userImage,
+            data = post.user.image,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
         )
       }
       Spacer(modifier = Modifier.width(10.dp))
-      Text(text = post.userName, style = MaterialTheme.typography.subtitle2)
+      Text(text = post.user.username, style = MaterialTheme.typography.subtitle2)
     }
     Icon(Filled.MoreVert)
   }

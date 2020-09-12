@@ -3,8 +3,7 @@ package com.vipulasri.jetinstagram.model
 data class Post(
   val id: Int,
   val image: String,
-  val userName: String,
-  val userImage: String,
+  val user: User,
   val isLiked: Boolean = false,
   val likesCount: Int,
   val commentsCount: Int,
