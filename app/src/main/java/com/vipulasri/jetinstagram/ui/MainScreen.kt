@@ -1,4 +1,4 @@
-package com.vipulasri.jetinstagram.ui.home
+package com.vipulasri.jetinstagram.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Box
@@ -27,13 +27,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.currentUser
+import com.vipulasri.jetinstagram.ui.HomeSection.Add
+import com.vipulasri.jetinstagram.ui.HomeSection.Favorite
+import com.vipulasri.jetinstagram.ui.HomeSection.Home
+import com.vipulasri.jetinstagram.ui.HomeSection.Profile
+import com.vipulasri.jetinstagram.ui.HomeSection.Reels
 import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.icon
+import com.vipulasri.jetinstagram.ui.home.Home
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
-fun HomeScreen() {
-  val (currentSection, setCurrentSection) = savedInstanceState { HomeSection.Home }
+fun MainScreen() {
+  val (currentSection, setCurrentSection) = savedInstanceState { Home }
   val navItems = HomeSection.values()
       .toList()
   Scaffold(
@@ -47,11 +53,11 @@ fun HomeScreen() {
     val modifier = Modifier.padding(innerPadding)
     Crossfade(currentSection) { section ->
       when (section) {
-        HomeSection.Home -> Home()
-        HomeSection.Reels -> Content(title = "Reels")
-        HomeSection.Add -> Content(title = "Add Post options")
-        HomeSection.Favorite -> Content(title = "Favorite")
-        HomeSection.Profile -> Content(title = "Profile")
+        Home -> Home()
+        Reels -> Content(title = "Reels")
+        Add -> Content(title = "Add Post options")
+        Favorite -> Content(title = "Favorite")
+        Profile -> Content(title = "Profile")
       }
     }
   }
@@ -91,7 +97,7 @@ private fun BottomBar(
       BottomNavigationItem(
           icon = {
 
-            if (section == HomeSection.Profile) {
+            if (section == Profile) {
               BottomBarProfile(selected)
             } else {
               Icon(

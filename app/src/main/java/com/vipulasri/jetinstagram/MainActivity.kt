@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.platform.setContent
-import com.vipulasri.jetinstagram.ui.home.HomeScreen
+import com.vipulasri.jetinstagram.ui.MainScreen
 import com.vipulasri.jetinstagram.ui.theme.JetInstagramTheme
 
 class MainActivity : AppCompatActivity() {
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     setContent {
       JetInstagramTheme {
         Surface(color = MaterialTheme.colors.background) {
-          HomeScreen()
+          MainScreen()
         }
       }
     }
