@@ -1,10 +1,9 @@
 package com.vipulasri.jetinstagram.ui.components
 
 import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.repeatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.transitionDefinition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.transition
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.ContentGravity
@@ -23,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
-import com.vipulasri.jetinstagram.R.drawable
+import androidx.ui.tooling.preview.Preview
+import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.Post
+import com.vipulasri.jetinstagram.model.names
 
 private enum class AnimationState {
   START,
@@ -36,15 +37,12 @@ private enum class AnimationState {
 private val dpPropKey = DpPropKey()
 private val dpAnimDefinition = transitionDefinition<Int> {
   state(AnimationState.START.ordinal) { this[dpPropKey] = 24.dp }
+  state(AnimationState.MID.ordinal) { this[dpPropKey] = 14.dp }
   state(AnimationState.END.ordinal) { this[dpPropKey] = 30.dp }
 
-  transition(0 to 2, 2 to 0) {
-    dpPropKey using repeatable(
-        iterations = 1,
-        animation = tween(
-            durationMillis = 50,
-            easing = FastOutLinearInEasing
-        )
+  transition(0 to 2, 1 to 2, 2 to 0) {
+    dpPropKey using spring(
+        stiffness = Spring.StiffnessHigh
     )
   }
 }
@@ -54,8 +52,12 @@ fun AnimLikeButton(
   post: Post,
   onLikeClick: (Post) -> Unit
 ) {
-  var dpStartState by remember { mutableStateOf(0) }
-  var dpEndState by remember { mutableStateOf(0) }
+  val contentColor = contentColor()
+  var dpStartState by remember { mutableStateOf(AnimationState.START.ordinal) }
+  var dpEndState by remember { mutableStateOf(AnimationState.START.ordinal) }
+  var isAnimating by remember { mutableStateOf(true) }
+  var likeIconRes by remember { mutableStateOf(R.drawable.ic_outlined_favorite) }
+  var likeIconColor by remember { mutableStateOf(contentColor) }
 
   val dpAnim = transition(
       definition = dpAnimDefinition,
@@ -63,26 +65,52 @@ fun AnimLikeButton(
       toState = dpEndState,
       onStateChangeFinished = {
         when (it) {
-          2 -> {
-            dpStartState = 2
-            dpEndState = 0
+          AnimationState.MID.ordinal -> {
+            dpStartState = AnimationState.MID.ordinal
+            dpEndState = AnimationState.END.ordinal
+          }
+          AnimationState.END.ordinal -> {
+            dpStartState = AnimationState.END.ordinal
+            dpEndState = AnimationState.START.ordinal
+
+            likeIconRes = if (post.isLiked) {
+              R.drawable.ic_filled_favorite
+            } else {
+              R.drawable.ic_outlined_favorite
+            }
+
+            likeIconColor = if (post.isLiked) {
+              Color.Red
+            } else {
+              contentColor
+            }
+
           }
         }
       }
   )
 
-  val likeIcon =
-    if (post.isLiked) imageResource(id = drawable.ic_filled_favorite) else imageResource(
-        id = drawable.ic_outlined_favorite
-    )
+  if (!isAnimating) {
 
-  val likeTint = if (post.isLiked) Color.Red else contentColor()
+    likeIconRes = if (post.isLiked) {
+      R.drawable.ic_filled_favorite
+    } else {
+      R.drawable.ic_outlined_favorite
+    }
+
+    likeIconColor = if (post.isLiked) {
+      Color.Red
+    } else {
+      contentColor
+    }
+  }
 
   Box(
       modifier = Modifier
           .clickable(
               onClick = {
-                dpEndState = 2
+                dpEndState = AnimationState.MID.ordinal
+                isAnimating = true
                 onLikeClick.invoke(post)
               },
               indication = RippleIndication(bounded = false, radius = 24.dp)
@@ -91,8 +119,27 @@ fun AnimLikeButton(
           .then(Modifier.preferredSize(30.dp)),
       gravity = ContentGravity.Center
   ) {
-    Icon(asset = likeIcon, tint = likeTint, modifier = Modifier.preferredSize(dpAnim[dpPropKey]))
+    Icon(
+        asset = imageResource(id = likeIconRes), tint = likeIconColor,
+        modifier = Modifier.preferredSize(dpAnim[dpPropKey])
+    )
   }
 
 }
 
+@Preview
+@Composable
+private fun LikeButtonPreview() {
+  AnimLikeButton(
+      post = Post(
+          id = 1,
+          image = "https://source.unsplash.com/random/400x300",
+          userName = names.first(),
+          userImage = "https://randomuser.me/api/portraits/men/1.jpg",
+          likesCount = 100,
+          commentsCount = 20,
+          timeStamp = System.currentTimeMillis() - (60000)
+      ),
+      onLikeClick = {
+      })
+}
