@@ -39,6 +39,7 @@ object ReelsRepository {
 }
 
 private val videos = listOf(
+    "food.mp4",
     "soap-bubbles.mp4",
     "castle.mp4",
     "lake.mp4",
