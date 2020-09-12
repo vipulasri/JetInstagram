@@ -23,7 +23,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,8 +31,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
-import com.vipulasri.jetinstagram.data.PostsRepository
-import com.vipulasri.jetinstagram.model.Post
+import com.vipulasri.jetinstagram.data.ReelsRepository
+import com.vipulasri.jetinstagram.model.Reel
+import com.vipulasri.jetinstagram.ui.components.VideoPlayer
 import com.vipulasri.jetinstagram.ui.components.defaultPadding
 import com.vipulasri.jetinstagram.ui.components.horizontalPadding
 import com.vipulasri.jetinstagram.ui.components.icon
@@ -65,27 +65,20 @@ private fun ReelsHeader() {
 
 @Composable
 private fun ReelsList() {
-  val posts by PostsRepository.observePosts()
+  val reels = ReelsRepository.getReels()
 
-  LazyColumnFor(items = posts) { post ->
+  LazyColumnFor(items = reels) { reel ->
     Stack(
         modifier = Modifier.fillMaxWidth()
             .aspectRatio(0.56f),
     ) {
-      CoilImage(
-          data = post.image,
-          contentScale = ContentScale.Fit,
-          loading = {
-            LoadingIndicator(
-                modifier = Modifier.fillParentMaxSize()
-            )
-          },
-          modifier = Modifier.fillParentMaxSize(),
-      )
+
+      VideoPlayer(uri = reel.getVideoUrl())
+
       Column(
           modifier = Modifier.gravity(Alignment.BottomStart),
       ) {
-        ReelFooter(post = post, modifier = Modifier)
+        ReelFooter(reel = reel, modifier = Modifier)
         Divider()
       }
     }
@@ -95,7 +88,7 @@ private fun ReelsList() {
 @Composable
 private fun ReelFooter(
   modifier: Modifier,
-  post: Post
+  reel: Reel
 ) {
   Column(modifier) {
 
@@ -105,7 +98,7 @@ private fun ReelFooter(
         modifier = Modifier.defaultPadding()
     ) {
       CoilImage(
-          data = post.userImage,
+          data = reel.user.image,
           contentScale = ContentScale.Crop,
           modifier = Modifier.preferredSize(20.dp)
               .background(color = Color.Gray, shape = CircleShape)
@@ -113,7 +106,7 @@ private fun ReelFooter(
       )
       Spacer(modifier = Modifier.width(horizontalPadding))
       Text(
-          text = post.userName,
+          text = reel.user.userName,
           color = Color.White,
           style = MaterialTheme.typography.subtitle2
       )
@@ -154,12 +147,12 @@ private fun ReelFooter(
       ) {
         UserActionWithText(
             drawableRes = R.drawable.ic_outlined_favorite,
-            text = post.likesCount.toString()
+            text = reel.likesCount.toString()
         )
         Spacer(modifier = Modifier.width(horizontalPadding))
         UserActionWithText(
             drawableRes = R.drawable.ic_outlined_favorite,
-            text = post.commentsCount.toString()
+            text = reel.commentsCount.toString()
         )
       }
     }
