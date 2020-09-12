@@ -10,6 +10,10 @@ This sample showcases:
 * Reels
 * Playing Video with [Exoplayer](exoplayer) in Compose Environment
 
+<img src="art/screen-1.png" width="40%" />
+<img src="art/screen-2.png" width="40%" />
+<img src="art/jetinstagram.gif" width="60%" />
+
 ### Status: 🚧 In progress 🚧
 
 JetInstagram is still under development and some screens are not yet implemented.
