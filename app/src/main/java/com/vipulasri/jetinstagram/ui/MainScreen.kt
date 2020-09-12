@@ -35,6 +35,7 @@ import com.vipulasri.jetinstagram.ui.HomeSection.Reels
 import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.home.Home
+import com.vipulasri.jetinstagram.ui.reels.Reels
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -54,7 +55,7 @@ fun MainScreen() {
     Crossfade(currentSection) { section ->
       when (section) {
         Home -> Home()
-        Reels -> Content(title = "Reels")
+        Reels -> Reels()
         Add -> Content(title = "Add Post options")
         Favorite -> Content(title = "Favorite")
         Profile -> Content(title = "Profile")
