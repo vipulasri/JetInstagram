@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.preferredSize
 import androidx.compose.foundation.layout.width
@@ -37,6 +38,7 @@ import com.vipulasri.jetinstagram.ui.components.VideoPlayer
 import com.vipulasri.jetinstagram.ui.components.defaultPadding
 import com.vipulasri.jetinstagram.ui.components.horizontalPadding
 import com.vipulasri.jetinstagram.ui.components.icon
+import com.vipulasri.jetinstagram.ui.components.verticalPadding
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -70,7 +72,7 @@ private fun ReelsList() {
   LazyColumnFor(items = reels) { reel ->
     Stack(
         modifier = Modifier.fillMaxWidth()
-            .aspectRatio(0.56f),
+            .aspectRatio(0.5f),
     ) {
 
       VideoPlayer(uri = reel.getVideoUrl())
@@ -78,7 +80,7 @@ private fun ReelsList() {
       Column(
           modifier = Modifier.gravity(Alignment.BottomStart),
       ) {
-        ReelFooter(reel = reel, modifier = Modifier)
+        ReelFooter(reel = reel)
         Divider()
       }
     }
@@ -87,15 +89,16 @@ private fun ReelsList() {
 
 @Composable
 private fun ReelFooter(
-  modifier: Modifier,
   reel: Reel
 ) {
-  Column(modifier) {
+  Column(
+      modifier = Modifier.defaultPadding(),
+      verticalArrangement = Arrangement.Center
+  ) {
 
     // user data
     Row(
         verticalGravity = Alignment.CenterVertically,
-        modifier = Modifier.defaultPadding()
     ) {
       CoilImage(
           data = reel.user.image,
@@ -125,10 +128,11 @@ private fun ReelFooter(
       )
     }
 
+    Spacer(modifier = Modifier.height(verticalPadding))
+
     // actions
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = horizontalPadding),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalGravity = Alignment.CenterVertically
     ) {
