@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Stack
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +31,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +49,7 @@ import com.vipulasri.jetinstagram.data.StoriesRepository
 import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.Story
 import com.vipulasri.jetinstagram.ui.components.AnimLikeButton
+import com.vipulasri.jetinstagram.ui.components.PhotoLikeAnimation
 import com.vipulasri.jetinstagram.ui.components.PostIconButton
 import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.defaultPadding
@@ -195,14 +199,20 @@ private fun PostView(
   onDoubleClick: (Post) -> Unit,
   onLikeToggle: (Post) -> Unit
 ) {
+
+  val photoLikeAnimation = remember { mutableStateOf(false) }
+
   Column {
     PostHeader(post)
-    Box(
+    Stack(
         modifier = Modifier.fillMaxWidth()
             .height(300.dp)
             .clickable(
                 onClick = { },
-                onDoubleClick = { onDoubleClick.invoke(post) },
+                onDoubleClick = {
+                  photoLikeAnimation.value = true
+                  onDoubleClick.invoke(post)
+                },
                 indication = null
             )
             .background(color = Color.LightGray)
@@ -212,6 +222,12 @@ private fun PostView(
           contentScale = ContentScale.Crop,
           modifier = Modifier.fillMaxSize()
       )
+      PhotoLikeAnimation(
+          modifier = Modifier.fillMaxSize(),
+          startAnimation = photoLikeAnimation.value,
+          onAnimationComplete = {
+            photoLikeAnimation.value = false
+          })
     }
     PostFooter(post, onLikeToggle)
     Divider()

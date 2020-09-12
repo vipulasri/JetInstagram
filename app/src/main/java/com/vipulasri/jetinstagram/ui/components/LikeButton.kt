@@ -27,7 +27,7 @@ import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.names
 
-private enum class AnimationState {
+internal enum class AnimationState {
   START,
   MID,
   END
@@ -55,7 +55,7 @@ fun AnimLikeButton(
   val contentColor = contentColor()
   var dpStartState by remember { mutableStateOf(AnimationState.START.ordinal) }
   var dpEndState by remember { mutableStateOf(AnimationState.START.ordinal) }
-  var isAnimating by remember { mutableStateOf(true) }
+  var isAnimating by remember { mutableStateOf(false) }
   var likeIconRes by remember { mutableStateOf(R.drawable.ic_outlined_favorite) }
   var likeIconColor by remember { mutableStateOf(contentColor) }
 
@@ -84,6 +84,8 @@ fun AnimLikeButton(
             } else {
               contentColor
             }
+
+            isAnimating = false
 
           }
         }
