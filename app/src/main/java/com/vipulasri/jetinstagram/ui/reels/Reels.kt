@@ -71,7 +71,7 @@ private fun ReelsList() {
   LazyColumnFor(items = reels) { reel ->
     Stack(
         modifier = Modifier.fillMaxWidth()
-            .aspectRatio(0.5f),
+            .aspectRatio(0.57f),
     ) {
 
       VideoPlayer(uri = reel.getVideoUrl())
