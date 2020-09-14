@@ -50,7 +50,7 @@ fun VideoPlayer(uri: Uri) {
   })
 
   onDispose(callback = {
-    exoPlayer.stop()
+    exoPlayer.release()
   })
 
 }
