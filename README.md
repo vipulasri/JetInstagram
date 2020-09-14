@@ -10,9 +10,11 @@ This sample showcases:
 * Reels
 * Playing Video with [Exoplayer][exoplayer] in Compose Environment
 
-<img src="art/screen-1.png" width="30%" />
-<img src="art/screen-2.png" width="30%" />
-<img src="art/jetinstagram.gif" width="60%" />
+<p float="center">
+  <img src="art/jetinstagram.gif" width="250" />
+  <img src="art/screen-1.png" width="250" />
+  <img src="art/screen-2.png" width="250" />
+</p>
 
 ### Status: 🚧 In progress 🚧
 
