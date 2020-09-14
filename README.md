@@ -8,10 +8,10 @@ This sample showcases:
 * Post Like Button Animation
 * Photo Like Animation
 * Reels
-* Playing Video with [Exoplayer](exoplayer) in Compose Environment
+* Playing Video with [Exoplayer][exoplayer] in Compose Environment
 
-<img src="art/screen-1.png" width="40%" />
-<img src="art/screen-2.png" width="40%" />
+<img src="art/screen-1.png" width="30%" />
+<img src="art/screen-2.png" width="30%" />
 <img src="art/jetinstagram.gif" width="60%" />
 
 ### Status: 🚧 In progress 🚧
@@ -20,8 +20,8 @@ JetInstagram is still under development and some screens are not yet implemented
 
 Libraries:
 * Compose Toolkit
-* [Accompanist](coil-accompanist)
-* [Exoplayer](exoplayer)
+* [Accompanist][coil-accompanist]
+* [Exoplayer][exoplayer]
 * Kotlin Coroutines
 
 [compose]: https://developer.android.com/jetpack/compose
