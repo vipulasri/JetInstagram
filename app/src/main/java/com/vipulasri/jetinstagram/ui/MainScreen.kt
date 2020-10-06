@@ -8,9 +8,7 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.contentColor
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -52,14 +50,16 @@ fun MainScreen() {
         )
       }) { innerPadding ->
     val modifier = Modifier.padding(innerPadding)
-    Crossfade(currentSection) { section ->
-      when (section) {
-        Home -> Home()
-        Reels -> Reels()
-        Add -> Content(title = "Add Post options")
-        Favorite -> Content(title = "Favorite")
-        Profile -> Content(title = "Profile")
-      }
+    Crossfade(
+        modifier = modifier,
+        current = currentSection) { section ->
+        when (section) {
+            Home -> Home()
+            Reels -> Reels()
+            Add -> Content(title = "Add Post options")
+            Favorite -> Content(title = "Favorite")
+            Profile -> Content(title = "Profile")
+        }
     }
   }
 }

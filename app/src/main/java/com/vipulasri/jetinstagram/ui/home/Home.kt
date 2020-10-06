@@ -59,7 +59,6 @@ fun Home() {
             }
           }
       )
-      Spacer(modifier = Modifier.height(bottomBarHeight))
     }
   }
 }

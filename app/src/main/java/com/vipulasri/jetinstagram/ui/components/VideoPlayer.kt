@@ -8,9 +8,11 @@ import androidx.compose.runtime.onDispose
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
@@ -37,12 +39,14 @@ fun VideoPlayer(uri: Uri) {
   }
 
   exoPlayer.playWhenReady = true
+  exoPlayer.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
   exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
 
   AndroidView(viewBlock = { context ->
     PlayerView(context).apply {
       hideController()
       useController = false
+      resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
       player = exoPlayer
       layoutParams = FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)

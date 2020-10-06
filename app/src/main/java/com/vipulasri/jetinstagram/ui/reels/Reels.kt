@@ -7,16 +7,7 @@ import androidx.compose.foundation.ContentGravity
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.Stack
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.preferredSize
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
@@ -28,16 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.data.ReelsRepository
 import com.vipulasri.jetinstagram.model.Reel
-import com.vipulasri.jetinstagram.ui.components.VideoPlayer
-import com.vipulasri.jetinstagram.ui.components.defaultPadding
-import com.vipulasri.jetinstagram.ui.components.horizontalPadding
-import com.vipulasri.jetinstagram.ui.components.icon
-import com.vipulasri.jetinstagram.ui.components.verticalPadding
+import com.vipulasri.jetinstagram.ui.components.*
 import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
@@ -67,11 +55,12 @@ private fun ReelsHeader() {
 @Composable
 private fun ReelsList() {
   val reels = ReelsRepository.getReels()
+  val configuration = ConfigurationAmbient.current
+  val reelsHeight = configuration.screenHeightDp.dp - bottomBarHeight
 
   LazyColumnFor(items = reels) { reel ->
     Stack(
-        modifier = Modifier.fillMaxWidth()
-            .aspectRatio(0.57f),
+        modifier = Modifier.fillParentMaxSize(),
     ) {
 
       VideoPlayer(uri = reel.getVideoUrl())
