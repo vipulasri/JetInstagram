@@ -28,81 +28,85 @@ import kotlinx.coroutines.launch
 @Composable
 fun Home() {
 
-  val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
 
-  Scaffold(
-      topBar = { Toolbar() }) {
-    val posts by PostsRepository.observePosts()
-    val stories by StoriesRepository.observeStories()
+    Scaffold(
+        topBar = { Toolbar() }) {
+        val posts by PostsRepository.observePosts()
+        val stories by StoriesRepository.observeStories()
 
-    Column {
-      StoriesSection(stories)
-      Divider()
-      PostList(posts,
-          onDoubleClick = { post ->
-            coroutineScope.launch {
-              PostsRepository.performLike(post.id)
+        LazyColumn{
+            item {
+                StoriesSection(stories)
+                Divider()
             }
-          },
-          onLikeToggle = { post ->
-            coroutineScope.launch {
-              PostsRepository.toggleLike(post.id)
+            itemsIndexed(posts){ _, post ->
+                Post(post,
+                    onDoubleClick = {
+                        coroutineScope.launch {
+                            PostsRepository.performLike(post.id)
+                        }
+                    },
+                    onLikeToggle = {
+                        coroutineScope.launch {
+                            PostsRepository.toggleLike(post.id)
+                        }
+                    }
+                )
             }
-          }
-      )
+        }
     }
-  }
 }
 
 @Composable
 private fun Toolbar() {
-  TopAppBar(
-      modifier = Modifier.fillMaxWidth(),
-      backgroundColor = MaterialTheme.colors.background
-  ) {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    TopAppBar(
+        modifier = Modifier.fillMaxWidth(),
+        backgroundColor = MaterialTheme.colors.background
     ) {
-      Icon(
-          ImageBitmap.imageResource(id = R.drawable.ic_outlined_camera),
-          modifier = Modifier.icon(),
-          contentDescription = ""
-      )
-      Box(
-          modifier = Modifier.padding(12.dp),
-          contentAlignment = Alignment.Center
-      ) {
-        Icon(
-            ImageVector.vectorResource(id = R.drawable.ic_instagram),
-            contentDescription = ""
-        )
-      }
-      Icon(
-          ImageBitmap.imageResource(id = R.drawable.ic_dm),
-          modifier = Modifier.icon(),
-          contentDescription = ""
-      )
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                ImageBitmap.imageResource(id = R.drawable.ic_outlined_camera),
+                modifier = Modifier.icon(),
+                contentDescription = ""
+            )
+            Box(
+                modifier = Modifier.padding(12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    ImageVector.vectorResource(id = R.drawable.ic_instagram),
+                    contentDescription = ""
+                )
+            }
+            Icon(
+                ImageBitmap.imageResource(id = R.drawable.ic_dm),
+                modifier = Modifier.icon(),
+                contentDescription = ""
+            )
+        }
     }
-  }
 }
 
 @Composable
 private fun StoriesSection(stories: List<Story>) {
-  Column {
-    Row(
-        modifier = Modifier.fillMaxWidth()
-            .padding(10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-      Text(text = "Stories", style = MaterialTheme.typography.subtitle2)
-      Text(text = "Watch All", style = MaterialTheme.typography.subtitle2)
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = "Stories", style = MaterialTheme.typography.subtitle2)
+            Text(text = "Watch All", style = MaterialTheme.typography.subtitle2)
+        }
+        StoriesList(stories)
+        Spacer(modifier = Modifier.height(10.dp))
     }
-    StoriesList(stories)
-    Spacer(modifier = Modifier.height(10.dp))
-  }
 }
 
 @Composable
@@ -124,12 +128,10 @@ private fun StoriesList(stories: List<Story>) {
 
 @ExperimentalFoundationApi
 @Composable
-private fun PostList(
-  posts: List<Post>,
-  onDoubleClick: (Post) -> Unit,
-  onLikeToggle: (Post) -> Unit
+private fun Post(
+    post: Post,
+    onDoubleClick: (Post) -> Unit,
+    onLikeToggle: (Post) -> Unit
 ) {
-  posts.forEach { post ->
     PostView(post, onDoubleClick, onLikeToggle)
-  }
 }
