@@ -1,17 +1,7 @@
 package com.vipulasri.jetinstagram.ui.components
 
-import androidx.compose.animation.DpPropKey
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.transitionDefinition
-import androidx.compose.animation.transition
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.ContentGravity
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.ColumnScope.gravity
-import androidx.compose.foundation.layout.Stack
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,13 +10,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 
 //dp animation
-private val dpPropKey = DpPropKey()
-private val dpAnimDefinition = transitionDefinition<Int> {
+/*private val dpPropKey = DpPropKey()
+private val dpAnimDefinition = transitionDefinition {
   state(AnimationState.START.ordinal) { this[dpPropKey] = 0.dp }
   state(AnimationState.END.ordinal) { this[dpPropKey] = 100.dp }
 
@@ -35,7 +25,7 @@ private val dpAnimDefinition = transitionDefinition<Int> {
         stiffness = Spring.StiffnessMedium
     )
   }
-}
+}*/
 
 @Composable
 fun PhotoLikeAnimation(
@@ -46,7 +36,7 @@ fun PhotoLikeAnimation(
   var dpEndState by remember { mutableStateOf(AnimationState.START.ordinal) }
   var isAnimating by remember { mutableStateOf(false) }
 
-  val dpAnim = transition(
+/*  val dpAnim = transition(
       definition = dpAnimDefinition,
       initState = dpStartState,
       toState = dpEndState,
@@ -61,14 +51,16 @@ fun PhotoLikeAnimation(
           }
         }
       }
-  )
+  )*/
 
-  Stack(modifier = modifier) {
+  Box(modifier = modifier) {
     Icon(
-        asset = imageResource(id = R.drawable.ic_filled_favorite),
+        ImageBitmap.imageResource(id = R.drawable.ic_filled_favorite),
         tint = Color.White,
-        modifier = Modifier.preferredSize(dpAnim[dpPropKey])
-            .gravity(Alignment.Center)
+        modifier = Modifier
+//            .size(dpAnim[dpPropKey])
+            .align(Alignment.Center),
+        contentDescription = ""
     )
   }
 

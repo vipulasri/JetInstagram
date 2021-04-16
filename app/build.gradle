@@ -7,7 +7,7 @@ plugins {
 
 android {
   compileSdkVersion 30
-  buildToolsVersion "30.0.1"
+  buildToolsVersion "30.0.3"
 
   defaultConfig {
     applicationId "com.vipulasri.jetinstagram"
@@ -58,14 +58,17 @@ dependencies {
   implementation Libs.AndroidX.coreKtx
   implementation Libs.AndroidX.appcompat
   implementation Libs.AndroidX.material
+  implementation Libs.AndroidX.tooling
 
   implementation Libs.AndroidX.Compose.runtime
+  implementation Libs.AndroidX.Compose.compiler
   implementation Libs.AndroidX.Compose.foundation
   implementation Libs.AndroidX.Compose.layout
   implementation Libs.AndroidX.Compose.ui
   implementation Libs.AndroidX.Compose.material
   implementation Libs.AndroidX.Compose.animation
   implementation Libs.AndroidX.Compose.tooling
+  implementation Libs.AndroidX.Compose.activity
 
   implementation Libs.Accompanist.coil
   implementation Libs.exoplayer
