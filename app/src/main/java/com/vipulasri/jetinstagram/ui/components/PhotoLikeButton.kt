@@ -23,27 +23,12 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 
-//dp animation
-/*private val dpPropKey = DpPropKey()
-private val dpAnimDefinition = transitionDefinition {
-  state(AnimationState.START.ordinal) { this[dpPropKey] = 0.dp }
-  state(AnimationState.END.ordinal) { this[dpPropKey] = 100.dp }
-
-  transition(0 to 2, 2 to 0) {
-    dpPropKey using spring(
-        stiffness = Spring.StiffnessMedium
-    )
-  }
-}*/
-
 @Composable
 fun PhotoLikeAnimation(
   modifier: Modifier,
   startAnimation: Boolean,
   onAnimationComplete: () -> Unit) {
     var animationState by remember { mutableStateOf(AnimationState.START) }
-    val startColor = contentColorFor(MaterialTheme.colors.background)
-    val endColor = Color(0xFFDF0707)
     val transition = updateTransition(targetState = animationState, label = "")
 
     val size by transition.animateDp(
@@ -55,20 +40,11 @@ fun PhotoLikeAnimation(
         }
     }
 
-    val animatedColor by transition.animateColor(
-        transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy) }, label = ""
-    ) { state ->
-        when (state) {
-            AnimationState.START -> startColor
-            else -> endColor
-        }
-    }
-
     if (size > 0.dp){
         Box(modifier = modifier) {
             Icon(
                 ImageBitmap.imageResource(id = R.drawable.ic_filled_favorite),
-                tint = animatedColor,
+                tint = contentColorFor(MaterialTheme.colors.background),
                 modifier = Modifier
                     .size(size)
                     .align(Alignment.Center),
