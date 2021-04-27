@@ -2,16 +2,16 @@ package com.vipulasri.jetinstagram.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.font.font
-import androidx.compose.ui.text.font.fontFamily
 import androidx.compose.ui.unit.sp
 import com.vipulasri.jetinstagram.R
 
-val RobotoFontFamily = fontFamily(
-    font(R.font.roboto_regular),
-    font(R.font.roboto_medium, FontWeight.Medium),
-    font(R.font.roboto_bold, FontWeight.Bold)
+val RobotoFontFamily = FontFamily(
+    Font(R.font.roboto_regular),
+    Font(R.font.roboto_medium, FontWeight.Medium),
+    Font(R.font.roboto_bold, FontWeight.Bold)
 )
 
 val typography = Typography(

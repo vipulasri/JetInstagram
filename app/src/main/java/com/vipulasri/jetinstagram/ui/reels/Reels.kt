@@ -1,36 +1,31 @@
 package com.vipulasri.jetinstagram.ui.reels
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Box
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ContentGravity
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ConfigurationAmbient
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.coil.CoilImage
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.data.ReelsRepository
 import com.vipulasri.jetinstagram.model.Reel
 import com.vipulasri.jetinstagram.ui.components.*
-import dev.chrisbanes.accompanist.coil.CoilImage
 
 @Composable
 fun Reels() {
-  Stack(modifier = Modifier.background(color = Color.Black)) {
+    Box(modifier = Modifier.background(color = Color.Black)) {
     ReelsList()
     ReelsHeader()
   }
@@ -45,9 +40,10 @@ private fun ReelsHeader() {
   ) {
     Text("Reels", color = Color.White)
     Icon(
-        imageResource(id = R.drawable.ic_outlined_camera),
+        ImageBitmap.imageResource(id = R.drawable.ic_outlined_camera),
         tint = Color.White,
-        modifier = Modifier.icon()
+        modifier = Modifier.icon(),
+        contentDescription = ""
     )
   }
 }
@@ -55,24 +51,30 @@ private fun ReelsHeader() {
 @Composable
 private fun ReelsList() {
   val reels = ReelsRepository.getReels()
+
+/*
   val configuration = ConfigurationAmbient.current
   val reelsHeight = configuration.screenHeightDp.dp - bottomBarHeight
+*/
 
-  LazyColumnFor(items = reels) { reel ->
-    Stack(
-        modifier = Modifier.fillParentMaxSize(),
-    ) {
+    LazyColumn{
 
-      VideoPlayer(uri = reel.getVideoUrl())
+        itemsIndexed(reels) { _, reel ->
+            Box(
+                modifier = Modifier.fillParentMaxSize(),
+            ) {
 
-      Column(
-          modifier = Modifier.gravity(Alignment.BottomStart),
-      ) {
-        ReelFooter(reel = reel)
-        Divider()
-      }
+                VideoPlayer(uri = reel.getVideoUrl())
+
+                Column(
+                    modifier = Modifier.align(Alignment.BottomStart),
+                ) {
+                    ReelFooter(reel = reel)
+                    Divider()
+                }
+            }
+        }
     }
-  }
 }
 
 @Composable
@@ -86,14 +88,15 @@ private fun ReelFooter(
 
     // user data
     Row(
-        verticalGravity = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
       CoilImage(
           data = reel.user.image,
           contentScale = ContentScale.Crop,
-          modifier = Modifier.preferredSize(20.dp)
+          modifier = Modifier.size(20.dp)
               .background(color = Color.Gray, shape = CircleShape)
-              .clip(CircleShape)
+              .clip(CircleShape),
+          contentDescription = null
       )
       Spacer(modifier = Modifier.width(horizontalPadding))
       Text(
@@ -102,7 +105,7 @@ private fun ReelFooter(
           style = MaterialTheme.typography.subtitle2
       )
       Spacer(modifier = Modifier.width(horizontalPadding))
-      Canvas(modifier = Modifier.preferredSize(5.dp), onDraw = {
+      Canvas(modifier = Modifier.size(5.dp), onDraw = {
         drawCircle(
             color = Color.White,
             radius = 8f
@@ -122,10 +125,10 @@ private fun ReelFooter(
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalGravity = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
       Row(
-          verticalGravity = Alignment.CenterVertically
+          verticalAlignment = Alignment.CenterVertically
       ) {
         UserAction(R.drawable.ic_outlined_favorite)
         Spacer(modifier = Modifier.width(horizontalPadding))
@@ -135,7 +138,7 @@ private fun ReelFooter(
       }
 
       Row(
-          verticalGravity = Alignment.CenterVertically
+          verticalAlignment = Alignment.CenterVertically
       ) {
         UserActionWithText(
             drawableRes = R.drawable.ic_outlined_favorite,
@@ -155,9 +158,10 @@ private fun ReelFooter(
 @Composable
 private fun UserAction(@DrawableRes drawableRes: Int) {
   Icon(
-      imageResource(id = drawableRes),
+      ImageBitmap.imageResource(id = drawableRes),
       tint = Color.White,
-      modifier = Modifier.icon()
+      modifier = Modifier.icon(),
+      contentDescription = ""
   )
 }
 
@@ -167,9 +171,10 @@ private fun UserActionWithText(
   text: String
 ) {
   Icon(
-      imageResource(id = drawableRes),
+      ImageBitmap.imageResource(id = drawableRes),
       tint = Color.White,
-      modifier = Modifier.preferredSize(18.dp)
+      modifier = Modifier.size(18.dp),
+      contentDescription = ""
   )
   Spacer(modifier = Modifier.width(horizontalPadding / 2))
   Text(
@@ -183,7 +188,7 @@ private fun UserActionWithText(
 private fun LoadingIndicator(modifier: Modifier) {
   Box(
       modifier = modifier,
-      gravity = ContentGravity.Center
+      contentAlignment = Alignment.Center
   ) {
     CircularProgressIndicator(
         color = Color.Gray,

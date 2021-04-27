@@ -1,28 +1,25 @@
 package com.vipulasri.jetinstagram.ui
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.Box
-import androidx.compose.foundation.ContentGravity
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.contentColor
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.savedinstancestate.savedInstanceState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.coil.CoilImage
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.currentUser
 import com.vipulasri.jetinstagram.ui.HomeSection.Add
@@ -34,25 +31,28 @@ import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.home.Home
 import com.vipulasri.jetinstagram.ui.reels.Reels
-import dev.chrisbanes.accompanist.coil.CoilImage
 
+@ExperimentalFoundationApi
 @Composable
 fun MainScreen() {
-  val (currentSection, setCurrentSection) = savedInstanceState { Home }
-  val navItems = HomeSection.values()
+
+    val sectionState = remember { mutableStateOf(Home) }
+
+    val navItems = HomeSection.values()
       .toList()
   Scaffold(
       bottomBar = {
         BottomBar(
             items = navItems,
-            currentSection = currentSection,
-            onSectionSelected = setCurrentSection,
+            currentSection = sectionState.value,
+            onSectionSelected = { sectionState.value = it},
         )
       }) { innerPadding ->
     val modifier = Modifier.padding(innerPadding)
     Crossfade(
         modifier = modifier,
-        current = currentSection) { section ->
+        targetState = sectionState.value)
+    { section ->
         when (section) {
             Home -> Home()
             Reels -> Reels()
@@ -68,7 +68,7 @@ fun MainScreen() {
 private fun Content(title: String) {
   Box(
       modifier = Modifier.fillMaxSize(),
-      gravity = ContentGravity.Center
+      contentAlignment = Alignment.Center
   ) {
     Text(
         text = title,
@@ -87,7 +87,7 @@ private fun BottomBar(
   BottomNavigation(
       modifier = Modifier.height(bottomBarHeight),
       backgroundColor = MaterialTheme.colors.background,
-      contentColor = contentColor()
+      contentColor = contentColorFor(MaterialTheme.colors.background)
   ) {
     items.forEach { section ->
 
@@ -102,15 +102,16 @@ private fun BottomBar(
               BottomBarProfile(selected)
             } else {
               Icon(
-                  imageResource(id = iconRes),
-                  modifier = Modifier.icon()
+                  ImageBitmap.imageResource(id = iconRes),
+                  modifier = Modifier.icon(),
+                  contentDescription = ""
               )
             }
 
           },
           selected = selected,
-          onSelect = { onSectionSelected(section) },
-          alwaysShowLabels = false
+          onClick = { onSectionSelected(section) },
+          alwaysShowLabel = false
       )
     }
   }
@@ -143,7 +144,8 @@ private fun BottomBarProfile(isSelected: Boolean) {
       CoilImage(
           data = currentUser.image,
           contentScale = ContentScale.Crop,
-          modifier = Modifier.fillMaxSize()
+          modifier = Modifier.fillMaxSize(),
+          contentDescription = null
       )
     }
   }
