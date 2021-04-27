@@ -1,7 +1,15 @@
 package com.vipulasri.jetinstagram.ui.components
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 
 //dp animation
@@ -32,41 +41,51 @@ fun PhotoLikeAnimation(
   modifier: Modifier,
   startAnimation: Boolean,
   onAnimationComplete: () -> Unit) {
-  var dpStartState by remember { mutableStateOf(AnimationState.START.ordinal) }
-  var dpEndState by remember { mutableStateOf(AnimationState.START.ordinal) }
-  var isAnimating by remember { mutableStateOf(false) }
+    var animationState by remember { mutableStateOf(AnimationState.START) }
+    val startColor = contentColorFor(MaterialTheme.colors.background)
+    val endColor = Color(0xFFDF0707)
+    val transition = updateTransition(targetState = animationState, label = "")
 
-/*  val dpAnim = transition(
-      definition = dpAnimDefinition,
-      initState = dpStartState,
-      toState = dpEndState,
-      onStateChangeFinished = {
-        when (it) {
-          AnimationState.END.ordinal -> {
-            dpStartState = AnimationState.END.ordinal
-            dpEndState = AnimationState.START.ordinal
-
-            isAnimating = false
-            onAnimationComplete.invoke()
-          }
+    val size by transition.animateDp(
+        transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy) }, label = ""
+    ) { state ->
+        when (state) {
+            AnimationState.START -> 0.dp
+            else -> 100.dp
         }
-      }
-  )*/
+    }
 
-  Box(modifier = modifier) {
-    Icon(
-        ImageBitmap.imageResource(id = R.drawable.ic_filled_favorite),
-        tint = Color.White,
-        modifier = Modifier
-//            .size(dpAnim[dpPropKey])
-            .align(Alignment.Center),
-        contentDescription = ""
-    )
-  }
+    val animatedColor by transition.animateColor(
+        transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy) }, label = ""
+    ) { state ->
+        when (state) {
+            AnimationState.START -> startColor
+            else -> endColor
+        }
+    }
 
-  if (startAnimation && !isAnimating) {
-    dpEndState = AnimationState.END.ordinal
-    isAnimating = true
-  }
+    if (size > 0.dp){
+        Box(modifier = modifier) {
+            Icon(
+                ImageBitmap.imageResource(id = R.drawable.ic_filled_favorite),
+                tint = animatedColor,
+                modifier = Modifier
+                    .size(size)
+                    .align(Alignment.Center),
+                contentDescription = ""
+            )
+        }
+    }
+
+    if (startAnimation && !transition.isRunning) {
+        animationState = AnimationState.END
+    }
+    else{
+        onAnimationComplete.invoke()
+    }
+
+    if (transition.currentState == AnimationState.END){
+        animationState = AnimationState.START
+    }
 
 }

@@ -1,14 +1,12 @@
 package com.vipulasri.jetinstagram.ui.components
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.contentColorFor
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,92 +25,56 @@ import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.User
 import com.vipulasri.jetinstagram.model.names
 
-internal enum class AnimationState {
-    START,
-    MID,
-    END
+enum class AnimationState {
+    START, END
 }
-
-//dp animation
-/*private val dpPropKey = DpPropKey()
-private val dpAnimDefinition = transitionDefinition<Int> {
-    transitionState(AnimationState.START.ordinal) { this[dpPropKey] = 24.dp }
-    transitionState(AnimationState.MID.ordinal) { this[dpPropKey] = 14.dp }
-    transitionState(AnimationState.END.ordinal) { this[dpPropKey] = 30.dp }
-
-    transition(0 to 2, 1 to 2, 2 to 0) {
-        dpPropKey using spring(
-            stiffness = Spring.StiffnessHigh
-        )
-    }
-}*/
 
 @Composable
 fun AnimLikeButton(
     post: Post,
     onLikeClick: (Post) -> Unit
 ) {
-    val contentColor = contentColorFor(MaterialTheme.colors.background)
-    var dpStartState by remember { mutableStateOf(AnimationState.START.ordinal) }
-    var dpEndState by remember { mutableStateOf(AnimationState.START.ordinal) }
-    var isAnimating by remember { mutableStateOf(false) }
     var likeIconRes by remember { mutableStateOf(R.drawable.ic_outlined_favorite) }
-    var likeIconColor by remember { mutableStateOf(contentColor) }
+    var animationState by remember { mutableStateOf(AnimationState.START) }
+    val startColor = contentColorFor(MaterialTheme.colors.background)
+    val endColor = Color(0xFFDF0707)
 
-/*    val dpAnim = transition(
-        definition = dpAnimDefinition,
-        initState = dpStartState,
-        toState = dpEndState,
-        onStateChangeFinished = {
-            when (it) {
-                AnimationState.MID.ordinal -> {
-                    dpStartState = AnimationState.MID.ordinal
-                    dpEndState = AnimationState.END.ordinal
-                }
-                AnimationState.END.ordinal -> {
-                    dpStartState = AnimationState.END.ordinal
-                    dpEndState = AnimationState.START.ordinal
+    val transition = updateTransition(targetState = animationState, label = "")
 
-                    likeIconRes = if (post.isLiked) {
-                        R.drawable.ic_filled_favorite
-                    } else {
-                        R.drawable.ic_outlined_favorite
-                    }
-
-                    likeIconColor = if (post.isLiked) {
-                        Color.Red
-                    } else {
-                        contentColor
-                    }
-
-                    isAnimating = false
-
-                }
-            }
+    val animatedColor by transition.animateColor(
+        transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy) }, label = ""
+    ) { state ->
+        when (state) {
+            AnimationState.START -> startColor
+            else -> endColor
         }
-    )*/
+    }
 
-    if (!isAnimating) {
-
-        likeIconRes = if (post.isLiked) {
-            R.drawable.ic_filled_favorite
-        } else {
-            R.drawable.ic_outlined_favorite
+    val size by transition.animateDp(
+        transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy) }, label = ""
+    ) { state ->
+        when (state) {
+            AnimationState.START -> 24.dp
+            else -> 26.dp
         }
+    }
 
-        likeIconColor = if (post.isLiked) {
-            Color.Red
-        } else {
-            contentColor
-        }
+    likeIconRes = if (post.isLiked) {
+        R.drawable.ic_filled_favorite
+    } else {
+        R.drawable.ic_outlined_favorite
     }
 
     Box(
         modifier = Modifier
             .clickable(
                 onClick = {
-                    dpEndState = AnimationState.MID.ordinal
-                    isAnimating = true
+
+                    animationState = when (animationState) {
+                        AnimationState.START -> AnimationState.END
+                        else -> AnimationState.START
+                    }
+
                     onLikeClick.invoke(post)
                 }
             )
@@ -125,12 +87,27 @@ fun AnimLikeButton(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            ImageBitmap.imageResource(id = likeIconRes), tint = likeIconColor,
-//            modifier = Modifier.size(dpAnim[dpPropKey]),
+            ImageBitmap.imageResource(id = likeIconRes), tint = animatedColor,
+            modifier = Modifier.size(size),
             contentDescription = ""
         )
     }
 
+/*    FloatingActionButton(
+        backgroundColor = animatedColor,
+        modifier = Modifier.size(40.dp),
+        onClick = {
+            animationState = when (animationState) {
+                AnimationState.START -> AnimationState.END
+                else -> AnimationState.START
+            }
+        }) {
+        Icon(
+            ImageBitmap.imageResource(id = R.drawable.ic_outlined_favorite), tint = animatedColor,
+            modifier = Modifier.size(position),
+            contentDescription = ""
+        )
+    }*/
 }
 
 @Preview
