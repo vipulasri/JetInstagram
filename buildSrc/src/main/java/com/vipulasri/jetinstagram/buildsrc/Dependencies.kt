@@ -1,7 +1,7 @@
 package com.vipulasri.jetinstagram.buildsrc
 
 object Libs {
-  const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0-alpha14"
+  const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.0-alpha08"
   const val junit = "junit:junit:4.13"
 
   const val exoplayer = "com.google.android.exoplayer:exoplayer:2.11.8"
@@ -12,14 +12,14 @@ object Libs {
   }
 
   object Kotlin {
-    private const val version = "1.4.32"
+    private const val version = "1.5.21"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
     const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
     const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
   }
 
   object Coroutines {
-    private const val version = "1.3.9"
+    private const val version = "1.5.2"
     const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
     const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
     const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
@@ -33,7 +33,7 @@ object Libs {
 
     object Compose {
       const val snapshot = ""
-      const val version = "1.0.0-beta04"
+      const val version = "1.0.2"
       const val activityComposeVersion = "1.3.0-alpha06"
 
       const val runtime = "androidx.compose.runtime:runtime:$version"
