@@ -32,8 +32,8 @@ fun StoryImage(imageUrl: String) {
   ) {
     Box(
       modifier = Modifier
-        .size(60.dp)
-        .padding(3.dp)
+        .size(66.dp)
+        .padding(6.dp)
         .background(color = Color.LightGray, shape = shape)
         .clip(shape)
     ) {

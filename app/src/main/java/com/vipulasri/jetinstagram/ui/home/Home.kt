@@ -28,110 +28,102 @@ import kotlinx.coroutines.launch
 @Composable
 fun Home() {
 
-    val coroutineScope = rememberCoroutineScope()
+  val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = { Toolbar() }) {
-        val posts by PostsRepository.observePosts()
-        val stories by StoriesRepository.observeStories()
+  Scaffold(
+    topBar = { Toolbar() }) {
+    val posts by PostsRepository.observePosts()
+    val stories by StoriesRepository.observeStories()
 
-        LazyColumn{
-            item {
-                StoriesSection(stories)
-                Divider()
+    LazyColumn {
+      item {
+        StoriesSection(stories)
+        Divider()
+      }
+      itemsIndexed(posts) { _, post ->
+        Post(post,
+          onDoubleClick = {
+            coroutineScope.launch {
+              PostsRepository.performLike(post.id)
             }
-            itemsIndexed(posts){ _, post ->
-                Post(post,
-                    onDoubleClick = {
-                        coroutineScope.launch {
-                            PostsRepository.performLike(post.id)
-                        }
-                    },
-                    onLikeToggle = {
-                        coroutineScope.launch {
-                            PostsRepository.toggleLike(post.id)
-                        }
-                    }
-                )
+          },
+          onLikeToggle = {
+            coroutineScope.launch {
+              PostsRepository.toggleLike(post.id)
             }
-        }
+          }
+        )
+      }
     }
+  }
 }
 
 @Composable
 private fun Toolbar() {
-    TopAppBar(
-        modifier = Modifier.fillMaxWidth(),
-        backgroundColor = MaterialTheme.colors.background
+  Row(
+    modifier = Modifier
+      .fillMaxWidth()
+      .height(56.dp)
+      .padding(horizontal = 10.dp),
+    horizontalArrangement = Arrangement.SpaceBetween,
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    Box(
+      modifier = Modifier.padding(6.dp),
+      contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .padding(horizontal = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                ImageBitmap.imageResource(id = R.drawable.ic_outlined_camera),
-                modifier = Modifier.icon(),
-                contentDescription = ""
-            )
-            Box(
-                modifier = Modifier.padding(12.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    ImageVector.vectorResource(id = R.drawable.ic_instagram),
-                    contentDescription = ""
-                )
-            }
-            Icon(
-                ImageBitmap.imageResource(id = R.drawable.ic_dm),
-                modifier = Modifier.icon(),
-                contentDescription = ""
-            )
-        }
+      Icon(
+        ImageVector.vectorResource(id = R.drawable.ic_instagram),
+        contentDescription = ""
+      )
     }
+    Icon(
+      ImageBitmap.imageResource(id = R.drawable.ic_dm),
+      modifier = Modifier.icon(),
+      contentDescription = ""
+    )
+  }
 }
 
 @Composable
 private fun StoriesSection(stories: List<Story>) {
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Stories", style = MaterialTheme.typography.subtitle2)
-            Text(text = "Watch All", style = MaterialTheme.typography.subtitle2)
-        }
-        StoriesList(stories)
-        Spacer(modifier = Modifier.height(10.dp))
-    }
+  Column {
+    StoriesList(stories)
+    Spacer(modifier = Modifier.height(10.dp))
+  }
 }
 
 @Composable
 private fun StoriesList(stories: List<Story>) {
-    LazyRow {
-        itemsIndexed(stories){ _, story ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(vertical = 5.dp, horizontal = 10.dp)
-            ) {
-                StoryImage(imageUrl = story.image)
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(story.name, style = MaterialTheme.typography.caption)
-            }
+  LazyRow {
+    itemsIndexed(stories) { index, story ->
 
-        }
+      if (index == 0) {
+        Spacer(modifier = Modifier.width(6.dp))
+      }
+
+      Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(vertical = 5.dp, horizontal = 6.dp)
+      ) {
+        StoryImage(imageUrl = story.image)
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(story.name, style = MaterialTheme.typography.caption)
+      }
+
+      if (index == stories.size.minus(1)) {
+        Spacer(modifier = Modifier.width(6.dp))
+      }
     }
+  }
 }
 
 @ExperimentalFoundationApi
 @Composable
 private fun Post(
-    post: Post,
-    onDoubleClick: (Post) -> Unit,
-    onLikeToggle: (Post) -> Unit
+  post: Post,
+  onDoubleClick: (Post) -> Unit,
+  onLikeToggle: (Post) -> Unit
 ) {
-    PostView(post, onDoubleClick, onLikeToggle)
+  PostView(post, onDoubleClick, onLikeToggle)
 }
