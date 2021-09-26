@@ -16,18 +16,16 @@ This sample showcases:
   <img src="art/screen-2.png" width="250" />
 </p>
 
-### Status: 🚧 In progress 🚧
-
 JetInstagram is still under development and some screens are not yet implemented.
 
 Libraries:
 * Compose Toolkit
-* [Accompanist][coil-accompanist]
+* [Coil][coil]
 * [Exoplayer][exoplayer]
 * Kotlin Coroutines
 
 [compose]: https://developer.android.com/jetpack/compose
-[coil-accompanist]: https://github.com/chrisbanes/accompanist
+[coil]: https://coil-kt.github.io/coil/compose
 [exoplayer]: https://github.com/google/ExoPlayer
 
 
