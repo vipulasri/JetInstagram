@@ -65,7 +65,7 @@ fun PhotoLikeAnimation(
 }
 
 @Composable
-fun DoubleTapPhotoLikeAnimation() {
+fun DoubleTapPhotoLikeAnimation(onDoubleTap: () -> Unit) {
   // Creates a transition state that starts in [Disappeared] State
   var transitionState by remember {
     mutableStateOf(MutableTransitionState(LikedStates.Disappeared))
@@ -84,6 +84,7 @@ fun DoubleTapPhotoLikeAnimation() {
             // The exception is when it's more important to respond immediately to
             // user interaction than preserving continuity.
             transitionState = MutableTransitionState(LikedStates.Initial)
+            onDoubleTap.invoke()
           }
         )
       }

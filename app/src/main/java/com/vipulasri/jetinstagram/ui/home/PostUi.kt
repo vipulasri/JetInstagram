@@ -4,7 +4,6 @@ import android.text.format.DateUtils
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
@@ -14,8 +13,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,22 +35,12 @@ fun PostView(
   onDoubleClick: (Post) -> Unit,
   onLikeToggle: (Post) -> Unit
 ) {
-
-  val photoLikeAnimation = remember { mutableStateOf(false) }
-
   Column {
     PostHeader(post)
     Box(
       modifier = Modifier
         .fillMaxWidth()
         .height(300.dp)
-        .combinedClickable(
-          onClick = { },
-          onDoubleClick = {
-            photoLikeAnimation.value = true
-            onDoubleClick.invoke(post)
-          }
-        )
         .background(color = Color.LightGray)
     ) {
       Image(
@@ -61,7 +48,11 @@ fun PostView(
         contentDescription = null,
         modifier = Modifier.fillMaxSize()
       )
-      DoubleTapPhotoLikeAnimation()
+      DoubleTapPhotoLikeAnimation(
+        onDoubleTap = {
+          onDoubleClick.invoke(post)
+        }
+      )
     }
     PostFooter(post, onLikeToggle)
     Divider()

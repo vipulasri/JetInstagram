@@ -1,6 +1,6 @@
 package com.vipulasri.jetinstagram.data
 
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.User
@@ -12,10 +12,11 @@ import kotlinx.coroutines.withContext
 @OptIn(ExperimentalCoroutinesApi::class)
 object PostsRepository {
 
-  private val posts = mutableStateOf<List<Post>>(emptyList())
+  private val _posts = mutableStateOf<List<Post>>(emptyList())
+  val posts: State<List<Post>> = _posts
 
   private fun populatePosts() {
-    val _posts = ArrayList<Post>()
+    val posts = ArrayList<Post>()
     (0..9).forEach { index ->
       val post = Post(
           id = index + 1,
@@ -29,17 +30,15 @@ object PostsRepository {
           commentsCount = index + 20,
           timeStamp = System.currentTimeMillis() - (index * 60000)
       )
-      _posts.add(post)
+      posts.add(post)
     }
 
-    posts.value = _posts
+    this._posts.value = posts
   }
 
   init {
     populatePosts()
   }
-
-  fun observePosts(): MutableState<List<Post>> = posts
 
   suspend fun toggleLike(postId: Int) {
     updateLike(postId, true)
@@ -54,8 +53,8 @@ object PostsRepository {
     isToggle: Boolean
   ) {
     withContext(Dispatchers.IO) {
-      val _posts = posts.value.toMutableList()
-      for ((index, value) in _posts.withIndex()) {
+      val posts = _posts.value.toMutableList()
+      for ((index, value) in posts.withIndex()) {
         if (value.id == postId) {
 
           val isLiked = if (isToggle) !value.isLiked else true
@@ -64,13 +63,13 @@ object PostsRepository {
           if (isLiked != value.isLiked) {
             val likesCount = if (isLiked) value.likesCount.plus(1) else value.likesCount.minus(1)
 
-            _posts[index] = value.copy(isLiked = isLiked, likesCount = likesCount)
+            posts[index] = value.copy(isLiked = isLiked, likesCount = likesCount)
           }
 
           break
         }
       }
-      posts.value = _posts
+      this@PostsRepository._posts.value = posts
     }
   }
 

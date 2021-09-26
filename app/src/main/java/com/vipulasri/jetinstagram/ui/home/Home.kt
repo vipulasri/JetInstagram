@@ -32,7 +32,7 @@ fun Home() {
 
   Scaffold(
     topBar = { Toolbar() }) {
-    val posts by PostsRepository.observePosts()
+    val posts by PostsRepository.posts
     val stories by StoriesRepository.observeStories()
 
     LazyColumn {
