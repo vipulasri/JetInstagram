@@ -2,6 +2,7 @@ package com.vipulasri.jetinstagram.ui.home
 
 import android.text.format.DateUtils
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,7 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.coil.CoilImage
+import coil.compose.rememberImagePainter
 import com.vipulasri.jetinstagram.R.drawable
 import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.ui.components.AnimLikeButton
@@ -59,12 +60,11 @@ import com.vipulasri.jetinstagram.ui.components.verticalPadding
             )
             .background(color = Color.LightGray)
     ) {
-      CoilImage(
-          data = post.image,
-          contentScale = ContentScale.Crop,
-          modifier = Modifier.fillMaxSize(),
-          contentDescription = null
-      )
+          Image(
+              painter = rememberImagePainter(post.image),
+              contentDescription = null,
+              modifier = Modifier.fillMaxSize()
+          )
       PhotoLikeAnimation(
           modifier = Modifier.fillMaxSize(),
           startAnimation = photoLikeAnimation.value,
@@ -93,11 +93,10 @@ private fun PostHeader(post: Post) {
               .background(color = Color.LightGray, shape = CircleShape)
               .clip(CircleShape)
       ) {
-        CoilImage(
-            data = post.user.image,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
-            contentDescription = null
+        Image(
+          painter = rememberImagePainter(post.user.image),
+          contentDescription = null,
+          modifier = Modifier.fillMaxSize()
         )
       }
       Spacer(modifier = Modifier.width(10.dp))

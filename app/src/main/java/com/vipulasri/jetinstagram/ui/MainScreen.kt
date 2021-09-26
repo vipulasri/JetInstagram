@@ -2,6 +2,7 @@ package com.vipulasri.jetinstagram.ui
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -19,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.CoilImage
+import coil.compose.rememberImagePainter
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.model.currentUser
 import com.vipulasri.jetinstagram.ui.HomeSection.Add
@@ -141,12 +142,11 @@ private fun BottomBarProfile(isSelected: Boolean) {
             .background(color = Color.LightGray, shape = shape)
             .clip(shape)
     ) {
-      CoilImage(
-          data = currentUser.image,
-          contentScale = ContentScale.Crop,
-          modifier = Modifier.fillMaxSize(),
-          contentDescription = null
-      )
+        Image(
+            painter = rememberImagePainter(currentUser.image),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+        )
     }
   }
 

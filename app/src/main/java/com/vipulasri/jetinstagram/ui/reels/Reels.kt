@@ -2,6 +2,7 @@ package com.vipulasri.jetinstagram.ui.reels
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +18,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.CoilImage
+import coil.compose.rememberImagePainter
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.data.ReelsRepository
 import com.vipulasri.jetinstagram.model.Reel
@@ -90,13 +91,12 @@ private fun ReelFooter(
     Row(
         verticalAlignment = Alignment.CenterVertically,
     ) {
-      CoilImage(
-          data = reel.user.image,
-          contentScale = ContentScale.Crop,
-          modifier = Modifier.size(20.dp)
-              .background(color = Color.Gray, shape = CircleShape)
-              .clip(CircleShape),
-          contentDescription = null
+      Image(
+        painter = rememberImagePainter(reel.user.image),
+        contentDescription = null,
+        modifier = Modifier.size(20.dp)
+          .background(color = Color.Gray, shape = CircleShape)
+          .clip(CircleShape)
       )
       Spacer(modifier = Modifier.width(horizontalPadding))
       Text(

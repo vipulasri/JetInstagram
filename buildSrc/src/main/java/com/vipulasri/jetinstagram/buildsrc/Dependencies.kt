@@ -6,9 +6,9 @@ object Libs {
 
   const val exoplayer = "com.google.android.exoplayer:exoplayer:2.11.8"
 
-  object Accompanist {
-    private const val version = "0.7.0"
-    const val coil = "com.google.accompanist:accompanist-coil:$version"
+  object Coil {
+    private const val version = "1.3.2"
+    const val sdk = "io.coil-kt:coil-compose:$version"
   }
 
   object Kotlin {

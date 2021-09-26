@@ -69,7 +69,7 @@ dependencies {
   implementation Libs.AndroidX.Compose.tooling
   implementation Libs.AndroidX.Compose.activity
 
-  implementation Libs.Accompanist.coil
+  implementation Libs.Coil.sdk
   implementation Libs.exoplayer
 
   androidTestImplementation Libs.junit

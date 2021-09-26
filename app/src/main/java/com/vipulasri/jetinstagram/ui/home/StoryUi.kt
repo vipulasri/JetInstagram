@@ -1,5 +1,6 @@
 package com.vipulasri.jetinstagram.ui.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.CoilImage
+import coil.compose.rememberImagePainter
 import com.vipulasri.jetinstagram.ui.components.diagonalGradientBorder
 
 @Composable
@@ -36,11 +37,10 @@ fun StoryImage(imageUrl: String) {
             .background(color = Color.LightGray, shape = shape)
             .clip(shape)
     ) {
-      CoilImage(
-          data = imageUrl,
-          contentScale = ContentScale.Crop,
-          modifier = Modifier.fillMaxSize(),
-          contentDescription = null
+      Image(
+        painter = rememberImagePainter(imageUrl),
+        contentDescription = null,
+        modifier = Modifier.fillMaxSize()
       )
     }
   }
