@@ -4,12 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.contentColorFor
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,51 +13,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
-
-@Composable
-fun PhotoLikeAnimation(
-  modifier: Modifier,
-  startAnimation: Boolean,
-  onAnimationComplete: () -> Unit
-) {
-  var animationState by remember { mutableStateOf(AnimationState.START) }
-  val transition = updateTransition(targetState = animationState, label = "")
-
-  val size by transition.animateDp(
-    transitionSpec = { spring(dampingRatio = Spring.DampingRatioHighBouncy) }, label = ""
-  ) { state ->
-    when (state) {
-      AnimationState.START -> 0.dp
-      else -> 100.dp
-    }
-  }
-
-  if (size > 0.dp) {
-    Box(modifier = modifier) {
-      Icon(
-        ImageBitmap.imageResource(id = R.drawable.ic_filled_favorite),
-        tint = contentColorFor(MaterialTheme.colors.background),
-        modifier = Modifier
-          .size(size)
-          .align(Alignment.Center),
-        contentDescription = ""
-      )
-    }
-  }
-
-  if (startAnimation && !transition.isRunning) {
-    animationState = AnimationState.END
-  } else {
-    onAnimationComplete.invoke()
-  }
-
-  if (transition.currentState == AnimationState.END) {
-    animationState = AnimationState.START
-  }
-
-}
 
 @Composable
 fun DoubleTapPhotoLikeAnimation(onDoubleTap: () -> Unit) {
